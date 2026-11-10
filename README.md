@@ -10,6 +10,49 @@ SovereignGuard is a multi-agent research prototype that checks each proposed han
 
 > Research prototype. Simulated scenarios only - no real patient data. Not legal advice. The knowledge base contains public documents only.
 
+## Architecture
+
+```mermaid
+flowchart LR
+    REQ["SRC: handoff request<br/>sender, receiver, purpose,<br/>consent records"] --> CT["Consent Chain Tracker<br/>(rules, no AI)"]
+    KB[("C / PP: knowledge base<br/>12 public UAE documents<br/>split by regulator")]
+    REQ --> DHA["M: DHA agent"]
+    REQ --> DOH["M: DoH agent"]
+    REQ --> FED["M: Federal agent"]
+    KB -- "DHA documents only" --> DHA
+    KB -- "DoH documents only" --> DOH
+    KB -- "Federal documents only" --> FED
+    DHA --> CV["Citation verifier<br/>(rules)"]
+    DOH --> CV
+    FED --> CV
+    CT --> CO{"P: Coordinator<br/>fail-closed rules"}
+    CV --> CO
+    CO -- "all satisfied" --> REL["D / SINK: RELEASED<br/>+ ledger record"]
+    CO -- "something missing" --> HOLD["D / SINK: HOLD<br/>Care Passport checklist"]
+    CO -- "any regulator says no" --> BLK["D / SINK: BLOCKED"]
+    CO --> GAP["Gap register<br/>for regulators"]
+    HOLD --> NAV["Patient Navigator<br/>English / Arabic"]
+    REL --> NAV
+    BLK --> NAV
+    HOLD -. "evidence provided, re-check" .-> REQ
+```
+
+SRC, C, PP, M, P, D and SINK are the ITU-T Y.3172 machine-learning pipeline nodes. This is an architectural mapping, not a conformance claim. The three regulator agents are independent: each sees only its own regulator's documents and never sees the others' answers.
+
+## Dashboard (local demo)
+
+```bash
+.venv/bin/pip install -r requirements.txt
+sh run_dashboard.sh         # opens on http://127.0.0.1:8501 (this computer only)
+```
+
+- **Scenarios:** every saved run, side by side - without SovereignGuard vs with it (outcome, Care Passport checklist, each regulator's decision and quoted clauses, gap register, message to the patient in English or Arabic). No API key needed.
+- **Run live:** re-run a scenario with the agents (needs `ANTHROPIC_API_KEY` in `.env`; uses API credit).
+- **Knowledge base:** search one regulator's documents directly (local, no key).
+- **Architecture:** the diagram above.
+
+The dashboard has no login, so it only runs on `127.0.0.1` and refuses to start on any other address.
+
 ## Building blocks
 
 | Building block | Type | File | Function | Reuse in another context |
@@ -59,6 +102,8 @@ echo 'ANTHROPIC_API_KEY=your-key-here' > .env      # .env is git-ignored
 
 Settings (optional environment variables): `SG_MODEL` (default `claude-opus-5-5`), `SG_EFFORT` (default `medium`).
 
+The default model `claude-opus-5-5` (Claude Opus 5.5) was confirmed available through the Anthropic API on 10 Nov 2026; every trace in `runs/` was generated with it (the model ID is recorded in each trace).
+
 ## Add your own scenario
 
 Copy any file in `scenarios/`, change the consent records and handoff steps, and run it. Each step needs `from_jurisdiction` / `to_jurisdiction` (`FEDERAL`, `DHA`, `DOH` or `OUTSIDE_UAE`), a `purpose`, `data_categories`, and a plain-language `question`. The coordinator picks the regulators automatically.
@@ -99,4 +144,5 @@ Public UAE documents, partitioned by regulator. Text extracted from the publishe
 - Research prototype on simulated scenarios; regulator agents' interpretations have **not** been reviewed by a lawyer.
 - Some documents may have newer versions than the ones we obtained (see notes above).
 - Retrieval uses a small general-purpose embedding model; a relevant clause can be missed, which may show up as SILENT.
+- The prototype sends only simulated scenarios and public regulation text to the model API. A real deployment must run inside the UAE (a local model, or UAE-hosted cloud infrastructure such as the AWS UAE region `me-central-1`).
 - Requires an Anthropic API key for governed mode. An offline local-model option is planned, not yet implemented.
