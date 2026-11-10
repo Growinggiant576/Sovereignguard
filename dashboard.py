@@ -181,7 +181,9 @@ with tab_kb:
     st.markdown("Search one regulator's documents directly (runs locally, no API key).")
     part = st.radio("Regulator", ["FEDERAL", "DHA", "DOH"], horizontal=True)
     q = st.text_input("Search", "store or transfer health data outside the country")
-    if q:
+    if not (ROOT / ".chroma").exists():
+        st.info("The knowledge base has not been built on this computer yet. Run: python -m sovereignguard.kb ingest")
+    elif q:
         from sovereignguard import kb
         for e in kb.search(part, q, k=5):
             with st.container(border=True):
@@ -196,18 +198,18 @@ digraph G {
   kbn  [label="C / PP\\nKnowledge base\\n12 public UAE documents\\nsplit by regulator"];
   ct   [label="Consent Chain Tracker\\n(rules, no AI)"];
   dha  [label="M\\nDHA agent"]; doh [label="M\\nDoH agent"]; fed [label="M\\nFederal agent"];
-  cv   [label="Citation verifier\\n(rules)"];
+  cv   [label="P\\nCitation verifier\\n(rules)"];
   co   [label="P\\nCoordinator\\nfail-closed rules", fillcolor="#fff4e5"];
   rel  [label="D / SINK\\nRELEASED\\n+ ledger record", fillcolor="#e6f4ea"];
   hold [label="D / SINK\\nHOLD\\nCare Passport checklist", fillcolor="#fff4e5"];
   blk  [label="D / SINK\\nBLOCKED", fillcolor="#fce8e6"];
-  nav  [label="Patient Navigator\\n(English / Arabic)"];
+  nav  [label="M\\nPatient Navigator\\n(English / Arabic)"];
   gap  [label="Gap register\\nfor regulators"];
-  req -> ct -> co; req -> dha; req -> doh; req -> fed;
+  req -> ct -> co; req -> dha [label="regulators involved"]; req -> doh; req -> fed;
   kbn -> dha [label="DHA only"]; kbn -> doh [label="DoH only"]; kbn -> fed [label="Federal only"];
   dha -> cv; doh -> cv; fed -> cv; cv -> co;
   co -> rel; co -> hold; co -> blk; co -> gap; hold -> nav; rel -> nav; blk -> nav;
-  hold -> req [label="evidence provided,\\nre-check", style=dashed];
+  hold -> req [label="evidence provided,\\nrun again (manual)", style=dashed];
 }
 """, width="stretch")
     st.caption("Labels SRC, C, PP, M, P, D, SINK are the ITU-T Y.3172 pipeline nodes (architectural mapping, not a conformance claim).")

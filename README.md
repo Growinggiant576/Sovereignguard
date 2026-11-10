@@ -16,13 +16,13 @@ SovereignGuard is a multi-agent research prototype that checks each proposed han
 flowchart LR
     REQ["SRC: handoff request<br/>sender, receiver, purpose,<br/>consent records"] --> CT["Consent Chain Tracker<br/>(rules, no AI)"]
     KB[("C / PP: knowledge base<br/>12 public UAE documents<br/>split by regulator")]
-    REQ --> DHA["M: DHA agent"]
+    REQ -- "regulators involved:<br/>sender's, receiver's, federal" --> DHA["M: DHA agent"]
     REQ --> DOH["M: DoH agent"]
     REQ --> FED["M: Federal agent"]
     KB -- "DHA documents only" --> DHA
     KB -- "DoH documents only" --> DOH
     KB -- "Federal documents only" --> FED
-    DHA --> CV["Citation verifier<br/>(rules)"]
+    DHA --> CV["P: Citation verifier<br/>(rules)"]
     DOH --> CV
     FED --> CV
     CT --> CO{"P: Coordinator<br/>fail-closed rules"}
@@ -31,24 +31,42 @@ flowchart LR
     CO -- "something missing" --> HOLD["D / SINK: HOLD<br/>Care Passport checklist"]
     CO -- "any regulator says no" --> BLK["D / SINK: BLOCKED"]
     CO --> GAP["Gap register<br/>for regulators"]
-    HOLD --> NAV["Patient Navigator<br/>English / Arabic"]
+    HOLD --> NAV["M: Patient Navigator<br/>English / Arabic"]
     REL --> NAV
     BLK --> NAV
-    HOLD -. "evidence provided, re-check" .-> REQ
+    HOLD -. "evidence provided, run the check again<br/>(manual re-run in the prototype)" .-> REQ
 ```
 
-SRC, C, PP, M, P, D and SINK are the ITU-T Y.3172 machine-learning pipeline nodes. This is an architectural mapping, not a conformance claim. The three regulator agents are independent: each sees only its own regulator's documents and never sees the others' answers.
+SRC, C, PP, M, P, D and SINK are the ITU-T Y.3172 machine-learning pipeline nodes. This is an architectural mapping, not a conformance claim. The coordinator asks only the regulators involved in a handoff (the sender's emirate, the receiver's emirate, and federal law), independently and in parallel; each agent sees only its own regulator's documents and never sees the others' answers. In the prototype, a held handoff is re-checked by running it again with the evidence added (scenarios s4 and s5).
 
 ## Dashboard (local demo)
 
+The dashboard runs on your own computer; there is no hosted website. The **Scenarios** tab shows every saved run and needs **no API key**.
+
+macOS / Linux:
 ```bash
+git clone https://github.com/Growinggiant576/Sovereignguard.git
+cd Sovereignguard
+python3 -m venv .venv
 .venv/bin/pip install -r requirements.txt
-sh run_dashboard.sh         # opens on http://127.0.0.1:8501 (this computer only)
+.venv/bin/python -m sovereignguard.kb ingest   # optional: needed only for the Knowledge base tab and live runs
+sh run_dashboard.sh                            # then open http://127.0.0.1:8501
 ```
 
-- **Scenarios:** every saved run, side by side - without SovereignGuard vs with it (outcome, Care Passport checklist, each regulator's decision and quoted clauses, gap register, message to the patient in English or Arabic). No API key needed.
-- **Run live:** re-run a scenario with the agents (needs `ANTHROPIC_API_KEY` in `.env`; uses API credit).
-- **Knowledge base:** search one regulator's documents directly (local, no key).
+Windows (PowerShell):
+```powershell
+git clone https://github.com/Growinggiant576/Sovereignguard.git
+cd Sovereignguard
+python -m venv .venv
+.venv\Scripts\pip install -r requirements.txt
+.venv\Scripts\python -m sovereignguard.kb ingest   # optional, as above
+.venv\Scripts\streamlit run dashboard.py --server.address 127.0.0.1
+```
+
+Tabs:
+- **Scenarios:** every saved run, side by side - without SovereignGuard vs with it (outcome, Care Passport checklist, each regulator's decision and quoted clauses, gap register, message to the patient in English or Arabic). No API key, no knowledge-base build needed.
+- **Run live:** re-run a scenario with the agents (needs `ANTHROPIC_API_KEY` in `.env` and the knowledge base built; uses API credit).
+- **Knowledge base:** search one regulator's documents directly (needs the knowledge base built; runs locally, no key).
 - **Architecture:** the diagram above.
 
 The dashboard has no login, so it only runs on `127.0.0.1` and refuses to start on any other address.
