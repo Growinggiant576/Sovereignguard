@@ -43,6 +43,8 @@ SRC, C, PP, M, P, D and SINK are the ITU-T Y.3172 machine-learning pipeline node
 
 The dashboard runs on your own computer; there is no hosted website. The **Scenarios** tab shows every saved run and needs **no API key**.
 
+**Requires Python 3.10 or newer.** Check with `python3 --version`. The Python built into macOS may be 3.9; if so, install Python 3.12 from python.org first.
+
 macOS / Linux:
 ```bash
 git clone https://github.com/Growinggiant576/Sovereignguard.git
