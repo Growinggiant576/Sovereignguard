@@ -1,0 +1,30 @@
+{
+  "id": "s4_care_transfer_completed",
+  "title": "Continuing treatment, after the Care Passport checklist is completed",
+  "note": "Simulated scenario. Same handoff as s1, re-checked after the patient and both hospitals complete the items SovereignGuard asked for in s1.",
+  "language": "en",
+  "patient_request": "I have signed the consent forms both hospitals gave me. Please send my records to my new hospital in Dubai so my treatment can continue.",
+  "consents": [
+    {"id": "c1", "granted_to": "Origin hospital (DoH-licensed, Abu Dhabi)", "recorded_under": "DOH",
+     "purposes": ["treatment"], "data_categories": ["clinical_record", "lab_results", "imaging"]},
+    {"id": "c2", "granted_to": "Receiving hospital (DHA-licensed, Dubai)", "recorded_under": "DOH",
+     "purposes": ["treatment"], "data_categories": ["clinical_record", "lab_results", "imaging"],
+     "form": "Written consent signed by the patient at the origin hospital for disclosure of the listed records to the named Dubai hospital"},
+    {"id": "c3", "granted_to": "Receiving hospital (DHA-licensed, Dubai)", "recorded_under": "DHA",
+     "purposes": ["treatment"], "data_categories": ["clinical_record", "lab_results", "imaging"],
+     "form": "Separate written consent signed by the patient at the Dubai hospital for requesting and receiving the records, on the Dubai hospital's consent form"}
+  ],
+  "steps": [
+    {"id": "1", "title": "Release treatment record to the Dubai hospital",
+     "from_entity": "Origin hospital (DoH-licensed, Abu Dhabi)", "from_jurisdiction": "DOH",
+     "to_entity": "Receiving hospital (DHA-licensed, Dubai)", "to_jurisdiction": "DHA", "to_location": "UAE",
+     "purpose": "treatment", "data_categories": ["clinical_record", "lab_results", "imaging"], "deidentified": false,
+     "evidence_provided": [
+       "Patient's written consent for this disclosure, signed at the origin hospital (consent c2)",
+       "Patient's separate written consent signed at the receiving Dubai hospital for requesting the record (consent c3)",
+       "Sharing route: signed referral from the origin hospital to the receiving hospital",
+       "Both hospitals confirm the record is used only for the patient's continuing treatment, kept confidential, and stored only inside the UAE"
+     ],
+     "question": "May a licensed healthcare facility in Abu Dhabi share an identifiable patient's health records with a licensed healthcare facility in Dubai for continuing treatment, given the evidence provided, and is anything still missing?"}
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "scenario": {
+    "id": "s5_ai_training_completed",
+    "title": "AI training reuse, after the Care Passport checklist is completed",
+    "note": "Simulated scenario. The s2 research handoff re-checked after the patient opts in to research use and the hospital and research partner provide the items SovereignGuard asked for. Processing stays inside the UAE.",
+    "language": "en",
+    "patient_request": "I have agreed that my de-identified records can be used to train an AI model for research, as long as they stay in the UAE.",
+    "consents": [
+      {
+        "id": "c1",
+        "granted_to": "Hospital (DHA-licensed, Dubai)",
+        "recorded_under": "DHA",
+        "purposes": [
+          "treatment"
+        ],
+        "data_categories": [
+          "clinical_record",
+          "lab_results",
+          "imaging"
+        ]
+      },
+      {
+        "id": "c2",
+        "granted_to": "AI research partner (Dubai)",
+        "recorded_under": "DHA",
+        "purposes": [
+          "research_ai_training"
+        ],
+        "data_categories": [
+          "clinical_record",
+          "imaging"
+        ],
+        "form": "Separate written opt-in consent signed by the patient for use of de-identified records to train an AI model for research, revocable at any time"
+      }
+    ],
+    "steps": [
+      {
+        "id": "1",
+        "title": "Hospital shares de-identified record with an AI research partner (inside the UAE)",
+        "from_entity": "Hospital (DHA-licensed, Dubai)",
+        "from_jurisdiction": "DHA",
+        "to_entity": "AI research partner (Dubai)",
+        "to_jurisdiction": "DHA",
+        "to_location": "UAE",
+        "purpose": "research_ai_training",
+        "data_categories": [
+          "clinical_record",
+          "imaging"
+        ],
+        "deidentified": true,
+        "evidence_provided": [
+          "Patient's separate written opt-in consent for AI training research, revocable (consent c2)",
+          "Research ethics committee approval for the project",
+          "De-identification: direct identifiers removed so the data does not identify the patient and cannot practically be used to determine identity",
+          "Data-sharing agreement stating the legal basis, consent handling, confidentiality, and health-research-only use",
+          "Data stored and processed only inside the UAE"
+        ],
+        "question": "May a healthcare facility share de-identified patient health data with a research partner to train an AI model, given the evidence provided, and is anything still missing?"
+      }
+    ]
+  },
+  "run_at": "2026-11-10T19:10:34+00:00",
+  "model": "none (no model used in this mode)",
+  "effort": "n/a",
+  "kb_fingerprint": "48837ef86e4ad24e",
+  "result": {
+    "mode": "ungoverned",
+    "steps": [
+      {
+        "step": {
+          "id": "1",
+          "title": "Hospital shares de-identified record with an AI research partner (inside the UAE)",
+          "from_entity": "Hospital (DHA-licensed, Dubai)",
+          "from_jurisdiction": "DHA",
+          "to_entity": "AI research partner (Dubai)",
+          "to_jurisdiction": "DHA",
+          "to_location": "UAE",
+          "purpose": "research_ai_training",
+          "data_categories": [
+            "clinical_record",
+            "imaging"
+          ],
+          "deidentified": true,
+          "evidence_provided": [
+            "Patient's separate written opt-in consent for AI training research, revocable (consent c2)",
+            "Research ethics committee approval for the project",
+            "De-identification: direct identifiers removed so the data does not identify the patient and cannot practically be used to determine identity",
+            "Data-sharing agreement stating the legal basis, consent handling, confidentiality, and health-research-only use",
+            "Data stored and processed only inside the UAE"
+          ],
+          "question": "May a healthcare facility share de-identified patient health data with a research partner to train an AI model, given the evidence provided, and is anything still missing?"
+        },
+        "outcome": "TRANSFERRED_WITHOUT_CHECKS",
+        "data_released": true,
+        "issues_not_caught": [
+          {
+            "code": "DEIDENTIFIED_CLAIM",
+            "severity": "INFO",
+            "detail": "Sender states the data is de-identified; each regulator's definition must be checked."
+          }
+        ]
+      }
+    ]
+  }
+}

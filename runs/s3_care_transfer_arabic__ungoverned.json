@@ -1,0 +1,80 @@
+{
+  "scenario": {
+    "id": "s3_care_transfer_arabic",
+    "title": "Continuing treatment (Arabic-speaking patient)",
+    "note": "Simulated scenario, same as s1 with the patient request and action plan in Arabic. The Arabic text has not been reviewed by a native speaker.",
+    "language": "ar",
+    "patient_request": "أتلقى العلاج في مستشفى في أبوظبي وسأنتقل إلى دبي. أرجو إرسال ملفي الطبي إلى مستشفاي الجديد في دبي حتى يستمر علاجي.",
+    "consents": [
+      {
+        "id": "c1",
+        "granted_to": "Origin hospital (DoH-licensed, Abu Dhabi)",
+        "recorded_under": "DOH",
+        "purposes": [
+          "treatment"
+        ],
+        "data_categories": [
+          "clinical_record",
+          "lab_results",
+          "imaging"
+        ]
+      }
+    ],
+    "steps": [
+      {
+        "id": "1",
+        "title": "Release treatment record to the Dubai hospital",
+        "from_entity": "Origin hospital (DoH-licensed, Abu Dhabi)",
+        "from_jurisdiction": "DOH",
+        "to_entity": "Receiving hospital (DHA-licensed, Dubai)",
+        "to_jurisdiction": "DHA",
+        "to_location": "UAE",
+        "purpose": "treatment",
+        "data_categories": [
+          "clinical_record",
+          "lab_results",
+          "imaging"
+        ],
+        "deidentified": false,
+        "question": "May a licensed healthcare facility in Abu Dhabi share an identifiable patient's health records with a licensed healthcare facility in Dubai for continuing treatment, and what consent or conditions apply?"
+      }
+    ]
+  },
+  "run_at": "2026-11-10T17:16:13+00:00",
+  "model": "none (no model used in this mode)",
+  "effort": "n/a",
+  "kb_fingerprint": "48837ef86e4ad24e",
+  "result": {
+    "mode": "ungoverned",
+    "steps": [
+      {
+        "step": {
+          "id": "1",
+          "title": "Release treatment record to the Dubai hospital",
+          "from_entity": "Origin hospital (DoH-licensed, Abu Dhabi)",
+          "from_jurisdiction": "DOH",
+          "to_entity": "Receiving hospital (DHA-licensed, Dubai)",
+          "to_jurisdiction": "DHA",
+          "to_location": "UAE",
+          "purpose": "treatment",
+          "data_categories": [
+            "clinical_record",
+            "lab_results",
+            "imaging"
+          ],
+          "deidentified": false,
+          "question": "May a licensed healthcare facility in Abu Dhabi share an identifiable patient's health records with a licensed healthcare facility in Dubai for continuing treatment, and what consent or conditions apply?"
+        },
+        "outcome": "TRANSFERRED_WITHOUT_CHECKS",
+        "data_released": true,
+        "issues_not_caught": [
+          {
+            "code": "CROSS_JURISDICTION_CONSENT",
+            "severity": "MEDIUM",
+            "detail": "Consent for 'treatment' was recorded under DOH; the receiving party is under DHA. Whether the receiving regulator recognises that consent must be checked."
+          }
+        ]
+      }
+    ]
+  }
+}

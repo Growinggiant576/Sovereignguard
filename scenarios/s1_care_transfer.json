@@ -1,0 +1,18 @@
+{
+  "id": "s1_care_transfer",
+  "title": "Continuing treatment: Abu Dhabi hospital to Dubai hospital",
+  "note": "Simulated scenario. Entities are generic; no real patient or facility data.",
+  "language": "en",
+  "patient_request": "I am being treated at a hospital in Abu Dhabi and I am moving to Dubai. Please send my medical records to my new hospital in Dubai so my treatment can continue.",
+  "consents": [
+    {"id": "c1", "granted_to": "Origin hospital (DoH-licensed, Abu Dhabi)", "recorded_under": "DOH",
+     "purposes": ["treatment"], "data_categories": ["clinical_record", "lab_results", "imaging"]}
+  ],
+  "steps": [
+    {"id": "1", "title": "Release treatment record to the Dubai hospital",
+     "from_entity": "Origin hospital (DoH-licensed, Abu Dhabi)", "from_jurisdiction": "DOH",
+     "to_entity": "Receiving hospital (DHA-licensed, Dubai)", "to_jurisdiction": "DHA", "to_location": "UAE",
+     "purpose": "treatment", "data_categories": ["clinical_record", "lab_results", "imaging"], "deidentified": false,
+     "question": "May a licensed healthcare facility in Abu Dhabi share an identifiable patient's health records with a licensed healthcare facility in Dubai for continuing treatment, and what consent or conditions apply?"}
+  ]
+}

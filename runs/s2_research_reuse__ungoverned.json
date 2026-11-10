@@ -1,0 +1,136 @@
+{
+  "scenario": {
+    "id": "s2_research_reuse",
+    "title": "Secondary use: the same record reused for AI model training",
+    "note": "Simulated scenario. Entities are generic; no real patient or facility data.",
+    "language": "en",
+    "patient_request": "I only agreed to share my records for my treatment. I want to know who else can use them.",
+    "consents": [
+      {
+        "id": "c1",
+        "granted_to": "Origin hospital (DoH-licensed, Abu Dhabi)",
+        "recorded_under": "DOH",
+        "purposes": [
+          "treatment"
+        ],
+        "data_categories": [
+          "clinical_record",
+          "lab_results",
+          "imaging"
+        ]
+      }
+    ],
+    "steps": [
+      {
+        "id": "1",
+        "title": "Dubai hospital shares de-identified record with an AI research partner",
+        "from_entity": "Receiving hospital (DHA-licensed, Dubai)",
+        "from_jurisdiction": "DHA",
+        "to_entity": "AI research partner (Dubai)",
+        "to_jurisdiction": "DHA",
+        "to_location": "UAE",
+        "purpose": "research_ai_training",
+        "data_categories": [
+          "clinical_record",
+          "imaging"
+        ],
+        "deidentified": true,
+        "question": "May a healthcare facility share patient health data, described as de-identified, with a research partner to train an AI model, when the patient consented only to treatment?"
+      },
+      {
+        "id": "2",
+        "title": "Research partner processes the data on a cloud server outside the UAE",
+        "from_entity": "AI research partner (Dubai)",
+        "from_jurisdiction": "DHA",
+        "to_entity": "Cloud processing provider (outside the UAE)",
+        "to_jurisdiction": "OUTSIDE_UAE",
+        "to_location": "OUTSIDE_UAE",
+        "purpose": "research_ai_training",
+        "data_categories": [
+          "clinical_record",
+          "imaging"
+        ],
+        "deidentified": true,
+        "question": "May health data be stored or processed outside the UAE for AI model training, and under what conditions?"
+      }
+    ]
+  },
+  "run_at": "2026-11-10T17:16:09+00:00",
+  "model": "none (no model used in this mode)",
+  "effort": "n/a",
+  "kb_fingerprint": "48837ef86e4ad24e",
+  "result": {
+    "mode": "ungoverned",
+    "steps": [
+      {
+        "step": {
+          "id": "1",
+          "title": "Dubai hospital shares de-identified record with an AI research partner",
+          "from_entity": "Receiving hospital (DHA-licensed, Dubai)",
+          "from_jurisdiction": "DHA",
+          "to_entity": "AI research partner (Dubai)",
+          "to_jurisdiction": "DHA",
+          "to_location": "UAE",
+          "purpose": "research_ai_training",
+          "data_categories": [
+            "clinical_record",
+            "imaging"
+          ],
+          "deidentified": true,
+          "question": "May a healthcare facility share patient health data, described as de-identified, with a research partner to train an AI model, when the patient consented only to treatment?"
+        },
+        "outcome": "TRANSFERRED_WITHOUT_CHECKS",
+        "data_released": true,
+        "issues_not_caught": [
+          {
+            "code": "PURPOSE_NOT_COVERED",
+            "severity": "HIGH",
+            "detail": "Proposed purpose 'research_ai_training' is not in any recorded consent (recorded purposes: treatment)."
+          },
+          {
+            "code": "DEIDENTIFIED_CLAIM",
+            "severity": "INFO",
+            "detail": "Sender states the data is de-identified; each regulator's definition must be checked."
+          }
+        ]
+      },
+      {
+        "step": {
+          "id": "2",
+          "title": "Research partner processes the data on a cloud server outside the UAE",
+          "from_entity": "AI research partner (Dubai)",
+          "from_jurisdiction": "DHA",
+          "to_entity": "Cloud processing provider (outside the UAE)",
+          "to_jurisdiction": "OUTSIDE_UAE",
+          "to_location": "OUTSIDE_UAE",
+          "purpose": "research_ai_training",
+          "data_categories": [
+            "clinical_record",
+            "imaging"
+          ],
+          "deidentified": true,
+          "question": "May health data be stored or processed outside the UAE for AI model training, and under what conditions?"
+        },
+        "outcome": "TRANSFERRED_WITHOUT_CHECKS",
+        "data_released": true,
+        "issues_not_caught": [
+          {
+            "code": "PURPOSE_NOT_COVERED",
+            "severity": "HIGH",
+            "detail": "Proposed purpose 'research_ai_training' is not in any recorded consent (recorded purposes: treatment)."
+          },
+          {
+            "code": "CROSS_BORDER_TRANSFER",
+            "severity": "HIGH",
+            "detail": "Data would be stored or processed outside the UAE."
+          },
+          {
+            "code": "DEIDENTIFIED_CLAIM",
+            "severity": "INFO",
+            "detail": "Sender states the data is de-identified; each regulator's definition must be checked."
+          }
+        ]
+      }
+    ]
+  }
+}

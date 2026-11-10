@@ -1,0 +1,134 @@
+[
+  {
+    "doc_id": "fed_law_2_2019",
+    "title": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+    "issuer": "Public Health Policies Department, Public health Policy and Licensing Sector (booklet); law issued by the President of the UAE",
+    "partition": "FEDERAL",
+    "source_url": "https://www.dha.gov.ae/uploads/082022/Federal%20Law%20No2022824434.pdf",
+    "accessed": "2026-11-10",
+    "language": "en",
+    "chars": 17096,
+    "notes": "Bilingual Arabic/English 'An Introductory' booklet of the law (Articles 1-31), hosted on the DHA regulatory-documents portal; not the Official Gazette; English text does not state whether it is an official translation. Arabic-script lines removed during cleaning."
+  },
+  {
+    "doc_id": "fed_ai_strategy_2031",
+    "title": "UAE National Strategy for Artificial Intelligence 2031",
+    "issuer": "UAE Government - Office of the Minister of State for Artificial Intelligence (ai.gov.ae)",
+    "partition": "FEDERAL",
+    "source_url": "https://ai.gov.ae/wp-content/uploads/2021/07/UAE-National-Strategy-for-Artificial-Intelligence-2031.pdf",
+    "accessed": "2026-11-10",
+    "language": "en",
+    "chars": 64734,
+    "notes": "Strategy document, not binding regulation. Multi-column layout; extracted reading order may break across columns/page footers."
+  },
+  {
+    "doc_id": "dha_nabidh_policies_standards",
+    "title": "NABIDH Policies and Standards",
+    "issuer": "Dubai Health Authority (DHA)",
+    "partition": "DHA",
+    "source_url": "https://nabidh.dha.gov.ae/cms/uploads/5bb756c30fec4f01b04d4e90a635a313.pdf",
+    "accessed": "2026-11-10",
+    "language": "en",
+    "chars": 246224,
+    "notes": "Cover: 'Nabidh Policies and Standards (V2.0) Revised on April 2025'; 188 pages; listed on nabidh.dha.gov.ae Policies & Standards page."
+  },
+  {
+    "doc_id": "dha_health_info_sharing_policy",
+    "title": "Policy for Health Data and Information Sharing",
+    "issuer": "Dubai Health Authority",
+    "partition": "DHA",
+    "source_url": "https://nabidh.dha.gov.ae/cms/uploads/3652b370cb92403191417e920ab0f343.pdf",
+    "accessed": "2026-11-10",
+    "language": "en",
+    "chars": 58953,
+    "notes": "Ref No: DHA/HISHD/PP-13; Version 1; Issue Date 10/08/2024; Effective 10/11/2024; Revision 10/08/2027. Bilingual header boilerplate (Arabic removed). Some tables (e.g., 4.6.5) extract out of order."
+  },
+  {
+    "doc_id": "dha_consent_access_control_std",
+    "title": "Standards for Health Information Consent and Access Control",
+    "issuer": "Dubai Health Authority",
+    "partition": "DHA",
+    "source_url": "https://nabidh.dha.gov.ae/cms/uploads/2e5de3bcf44943dd9f1980f283101b4c.pdf",
+    "accessed": "2026-11-10",
+    "language": "en",
+    "chars": 57311,
+    "notes": "Code: DHA/HISHD/ST-09; Issue 1; Issue Date 02/01/2025; Effective 02/04/2025; Revision 02/01/2030."
+  },
+  {
+    "doc_id": "dha_ai_healthcare_policy",
+    "title": "Artificial Intelligence in the Healthcare Policy",
+    "issuer": "Dubai Health Authority - Health Informatics and Smart Health Department",
+    "partition": "DHA",
+    "source_url": "https://nabidh.dha.gov.ae/cms/uploads/7c2063bf99f84bdcb88a4dc0933718b2.pdf",
+    "accessed": "2026-11-10",
+    "language": "en",
+    "chars": 29094,
+    "notes": "Document Title field reads 'Artificial Intelligence in the Healthcare'; Ref No: HRS/HISHD/AIP/1/2021; Version 1; Effective 1/7/2021; Revision 1/7/2024 (revision date has passed - may be superseded). Bilingual; Arabic removed."
+  },
+  {
+    "doc_id": "dha_health_data_protection_policy",
+    "title": "Policy for Data and Health Information Protection and Confidentiality",
+    "issuer": "Dubai Health Authority",
+    "partition": "DHA",
+    "source_url": "https://www.dha.gov.ae/uploads/082022/Health%20Data%20Protection%20and%20Confidentiality%20Policy_EN2022810559.pdf",
+    "accessed": "2026-11-10",
+    "language": "en",
+    "chars": 60490,
+    "notes": "Code: DHA/HRS/HISHD/PP-11; Version 1; Issue Date 10/08/2022; Effective 10/10/2022. DHA portal lists it as 'Policy for Health Data Protection and Confidentiality'. Bilingual header boilerplate (Arabic removed)."
+  },
+  {
+    "doc_id": "dha_personal_health_data_prefs",
+    "title": "My Personal Health Data Preferences",
+    "issuer": "Dubai Health Authority (NABIDH)",
+    "partition": "DHA",
+    "source_url": "https://nabidh.dha.gov.ae/cms/uploads/5285f4bb21d64b6abb17a2e28d55cd4a.pdf",
+    "accessed": "2026-11-10",
+    "language": "en",
+    "chars": 5185,
+    "notes": "Patient-facing NABIDH leaflet (file name 'NABIDH_Personal Health Data Preferences_EN_v5.1.SECURED.pdf'); informational, not a regulation."
+  },
+  {
+    "doc_id": "doh_adhie_policy",
+    "title": "Policy on the Abu Dhabi Health Information Exchange (HIE)",
+    "issuer": "Department of Health Abu Dhabi (DOH) - Strategy Division",
+    "partition": "DOH",
+    "source_url": "https://staticcdn.malaffi.ae/wpblobe9e5523f25/2020/04/doh-policy-on-the-adhie-april-2020.pdf",
+    "accessed": "2026-11-10",
+    "language": "en",
+    "chars": 86923,
+    "notes": "Ref: DOH/POL/STR/HIE/1.1/2020; Effective 16 April 2020; previous version November 2018; Classification: Public. Hosted on Malaffi CDN (linked from malaffi.ae/what-is-malaffi/policies/); doh.gov.ae was unreachable from this network."
+  },
+  {
+    "doc_id": "doh_patient_data_privacy_std",
+    "title": "DOH Standard on Patient Healthcare Data Privacy",
+    "issuer": "Department of Health Abu Dhabi (DOH) - Support Services Division",
+    "partition": "DOH",
+    "source_url": "https://staticcdn.malaffi.ae/wpblobe9e5523f25/2021/02/2020-09-15-DOH-Standard-on-Patient-Healthcare-Data-Privacy-for-publication-2.pdf",
+    "accessed": "2026-11-10",
+    "language": "en",
+    "chars": 41252,
+    "notes": "Ref: DOH/SD/SS/PHDP/0.9; Effective 16th September 2020; hosted on Malaffi CDN (linked from malaffi.ae policies page)."
+  },
+  {
+    "doc_id": "doh_adhics_standard",
+    "title": "Abu Dhabi - Healthcare Information and Cyber Security Standard",
+    "issuer": "Department of Health Abu Dhabi (DOH)",
+    "partition": "DOH",
+    "source_url": "https://staticcdn.malaffi.ae/wpblobe9e5523f25/2019/11/ADHICS_Standard-Final.pdf",
+    "accessed": "2026-11-10",
+    "language": "en",
+    "chars": 183154,
+    "notes": "Ref: DOH/SD/ADHICS/0.9; Version 0.9; Publication Date 03 February 2019; hosted on Malaffi CDN (linked from malaffi.ae policies page). Newer ADHICS versions may exist."
+  },
+  {
+    "doc_id": "doh_malaffi_privacy_notice",
+    "title": "Privacy Notice",
+    "issuer": "Abu Dhabi Health Data Services - Sole Proprietorship LLC (ADHDS) - Malaffi",
+    "partition": "DOH",
+    "source_url": "https://www.malaffi.ae/privacy-notice/",
+    "accessed": "2026-11-10",
+    "language": "en",
+    "chars": 22612,
+    "notes": "HTML page; 'VERSION 2.0 PUBLISHED ON 29 September 2022', 'Last updated on 08 May 2025'. Body text only (site navigation removed). Operator's privacy notice, not a DOH regulation."
+  }
+]

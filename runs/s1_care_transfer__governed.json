@@ -1,0 +1,597 @@
+{
+  "scenario": {
+    "id": "s1_care_transfer",
+    "title": "Continuing treatment: Abu Dhabi hospital to Dubai hospital",
+    "note": "Simulated scenario. Entities are generic; no real patient or facility data.",
+    "language": "en",
+    "patient_request": "I am being treated at a hospital in Abu Dhabi and I am moving to Dubai. Please send my medical records to my new hospital in Dubai so my treatment can continue.",
+    "consents": [
+      {
+        "id": "c1",
+        "granted_to": "Origin hospital (DoH-licensed, Abu Dhabi)",
+        "recorded_under": "DOH",
+        "purposes": [
+          "treatment"
+        ],
+        "data_categories": [
+          "clinical_record",
+          "lab_results",
+          "imaging"
+        ]
+      }
+    ],
+    "steps": [
+      {
+        "id": "1",
+        "title": "Release treatment record to the Dubai hospital",
+        "from_entity": "Origin hospital (DoH-licensed, Abu Dhabi)",
+        "from_jurisdiction": "DOH",
+        "to_entity": "Receiving hospital (DHA-licensed, Dubai)",
+        "to_jurisdiction": "DHA",
+        "to_location": "UAE",
+        "purpose": "treatment",
+        "data_categories": [
+          "clinical_record",
+          "lab_results",
+          "imaging"
+        ],
+        "deidentified": false,
+        "question": "May a licensed healthcare facility in Abu Dhabi share an identifiable patient's health records with a licensed healthcare facility in Dubai for continuing treatment, and what consent or conditions apply?"
+      }
+    ]
+  },
+  "run_at": "2026-11-10T19:11:39+00:00",
+  "model": "claude-opus-5-5",
+  "effort": "medium",
+  "kb_fingerprint": "48837ef86e4ad24e",
+  "result": {
+    "mode": "governed",
+    "steps": [
+      {
+        "step": {
+          "id": "1",
+          "title": "Release treatment record to the Dubai hospital",
+          "from_entity": "Origin hospital (DoH-licensed, Abu Dhabi)",
+          "from_jurisdiction": "DOH",
+          "to_entity": "Receiving hospital (DHA-licensed, Dubai)",
+          "to_jurisdiction": "DHA",
+          "to_location": "UAE",
+          "purpose": "treatment",
+          "data_categories": [
+            "clinical_record",
+            "lab_results",
+            "imaging"
+          ],
+          "deidentified": false,
+          "question": "May a licensed healthcare facility in Abu Dhabi share an identifiable patient's health records with a licensed healthcare facility in Dubai for continuing treatment, and what consent or conditions apply?"
+        },
+        "consent_findings": [
+          {
+            "code": "CROSS_JURISDICTION_CONSENT",
+            "severity": "MEDIUM",
+            "detail": "Consent for 'treatment' was recorded under DOH; the receiving party is under DHA. Whether the receiving regulator recognises that consent must be checked."
+          }
+        ],
+        "assessments": [
+          {
+            "agent": "DOH",
+            "authority": "Department of Health - Abu Dhabi (DoH)",
+            "partition": "DOH",
+            "query": "May a licensed healthcare facility in Abu Dhabi share an identifiable patient's health records with a licensed healthcare facility in Dubai for continuing treatment, and what consent or conditions apply? treatment clinical_record lab_results imaging || patient consent sharing disclosure of health information transfer of medical record to another entity for continuing care and treatment",
+            "retrieved": [
+              {
+                "excerpt_id": "doh_malaffi_privacy_notice::0009",
+                "title": "Privacy Notice",
+                "distance": 0.5269
+              },
+              {
+                "excerpt_id": "doh_malaffi_privacy_notice::0006",
+                "title": "Privacy Notice",
+                "distance": 0.5646
+              },
+              {
+                "excerpt_id": "doh_adhie_policy::0039",
+                "title": "Policy on the Abu Dhabi Health Information Exchange (HIE)",
+                "distance": 0.5991
+              },
+              {
+                "excerpt_id": "doh_patient_data_privacy_std::0012",
+                "title": "DOH Standard on Patient Healthcare Data Privacy",
+                "distance": 0.6169
+              },
+              {
+                "excerpt_id": "doh_patient_data_privacy_std::0009",
+                "title": "DOH Standard on Patient Healthcare Data Privacy",
+                "distance": 0.6493
+              },
+              {
+                "excerpt_id": "doh_adhics_standard::0000",
+                "title": "Abu Dhabi - Healthcare Information and Cyber Security Standard",
+                "distance": 0.6896
+              },
+              {
+                "excerpt_id": "doh_patient_data_privacy_std::0016",
+                "title": "DOH Standard on Patient Healthcare Data Privacy",
+                "distance": 0.7201
+              },
+              {
+                "excerpt_id": "doh_adhics_standard::0102",
+                "title": "Abu Dhabi - Healthcare Information and Cyber Security Standard",
+                "distance": 0.742
+              },
+              {
+                "excerpt_id": "doh_adhie_policy::0040",
+                "title": "Policy on the Abu Dhabi Health Information Exchange (HIE)",
+                "distance": 0.7667
+              },
+              {
+                "excerpt_id": "doh_malaffi_privacy_notice::0012",
+                "title": "Privacy Notice",
+                "distance": 0.7886
+              }
+            ],
+            "assessment": {
+              "decision": "PERMIT_WITH_CONDITIONS",
+              "summary": "Under the DoH excerpts, an Abu Dhabi facility may share identifiable records with a Dubai hospital for continuing treatment, subject to conditions. Written patient consent is required unless a listed exception applies; the Malaffi (ADHIE) exchange exception covers only facilities on that platform. The receiver must keep the data confidential and use it only for health purposes. The patient's selective-disclosure choices must be respected. The ban on transfers outside the UAE does not apply because Dubai is in the UAE. No evidence of written consent was provided.",
+              "applies_because": "The sender is a DoH-licensed facility in Abu Dhabi disclosing protected health information about care given in Abu Dhabi. DoH standards bind anyone who exchanges and circulates that information.",
+              "conditions": [
+                "Obtain the patient's written consent for this disclosure, unless the exchange happens over the Malaffi/ADHIE platform between participating facilities (a listed exception).",
+                "The receiving facility must keep the information confidential.",
+                "The information must not be used for non-health purposes; here the use is limited to continuing treatment.",
+                "Respect any selective-disclosure instruction from the patient limiting which facilities may receive the records.",
+                "Apply 'need to know' and 'least privilege': share only what is needed for continuing treatment.",
+                "Data must stay within the UAE; any onward transfer outside the UAE needs a DoH exception."
+              ],
+              "unmet_conditions": [
+                "No signed written patient consent for disclosure to the Dubai hospital has been provided, and no evidence shows the exchange uses the Malaffi/ADHIE platform between participating facilities.",
+                "No evidence confirms the patient has not restricted disclosure to this facility through selective disclosure."
+              ],
+              "open_questions": [
+                "Is the Dubai (DHA-licensed) hospital a participant in Malaffi/ADHIE? If so, does the HIE consent or exception cover this exchange? The Malaffi notice mentions facilities 'elsewhere', but the standard's exception refers to facilities on the Malaffi platform.",
+                "Does the existing 'treatment' consent recorded under DOH meet the written-consent requirement for disclosure to an out-of-emirate facility? Does DHA recognise that consent? DHA's view is outside DoH's excerpts.",
+                "The excerpts list exceptions to written consent only partly (some items are cut off). Could another exception, for example continuity of care, apply?"
+              ],
+              "citations": [
+                {
+                  "excerpt_id": "doh_patient_data_privacy_std::0009",
+                  "quote": "Must not use it without the written consent of the patient, except in the following cases.",
+                  "supports": "Written patient consent is required unless an exception applies.",
+                  "verified": true,
+                  "document": "DOH Standard on Patient Healthcare Data Privacy",
+                  "source_url": "https://staticcdn.malaffi.ae/wpblobe9e5523f25/2021/02/2020-09-15-DOH-Standard-on-Patient-Healthcare-Data-Privacy-for-publication-2.pdf"
+                },
+                {
+                  "excerpt_id": "doh_patient_data_privacy_std::0009",
+                  "quote": "Must ensure its confidentiality.",
+                  "supports": "Confidentiality duty for anyone exchanging patient information.",
+                  "verified": true,
+                  "document": "DOH Standard on Patient Healthcare Data Privacy",
+                  "source_url": "https://staticcdn.malaffi.ae/wpblobe9e5523f25/2021/02/2020-09-15-DOH-Standard-on-Patient-Healthcare-Data-Privacy-for-publication-2.pdf"
+                },
+                {
+                  "excerpt_id": "doh_patient_data_privacy_std::0009",
+                  "quote": "Must not use it for non-health purposes.",
+                  "supports": "Health-purpose-only restriction.",
+                  "verified": true,
+                  "document": "DOH Standard on Patient Healthcare Data Privacy",
+                  "source_url": "https://staticcdn.malaffi.ae/wpblobe9e5523f25/2021/02/2020-09-15-DOH-Standard-on-Patient-Healthcare-Data-Privacy-for-publication-2.pdf"
+                },
+                {
+                  "excerpt_id": "doh_patient_data_privacy_std::0009",
+                  "quote": "No entity is permitted to store, develop, or transfer PHI outside the United Arab Emirates that is related to health services provided within Abu Dhabi",
+                  "supports": "The localisation rule bans only transfers outside the UAE; Dubai is within the UAE.",
+                  "verified": true,
+                  "document": "DOH Standard on Patient Healthcare Data Privacy",
+                  "source_url": "https://staticcdn.malaffi.ae/wpblobe9e5523f25/2021/02/2020-09-15-DOH-Standard-on-Patient-Healthcare-Data-Privacy-for-publication-2.pdf"
+                },
+                {
+                  "excerpt_id": "doh_patient_data_privacy_std::0012",
+                  "quote": "Health information exchange between healthcare facilities on Abu Dhabi Health Information Exchange platform, Malaffi.",
+                  "supports": "Malaffi exchange is a listed exception to written consent.",
+                  "verified": true,
+                  "document": "DOH Standard on Patient Healthcare Data Privacy",
+                  "source_url": "https://staticcdn.malaffi.ae/wpblobe9e5523f25/2021/02/2020-09-15-DOH-Standard-on-Patient-Healthcare-Data-Privacy-for-publication-2.pdf"
+                },
+                {
+                  "excerpt_id": "doh_malaffi_privacy_notice::0006",
+                  "quote": "for the purpose of enabling such other Healthcare Facilities in the Emirate of Abu Dhabi and elsewhere",
+                  "supports": "HIE sharing for clinical care may extend to facilities outside Abu Dhabi.",
+                  "verified": true,
+                  "document": "Privacy Notice",
+                  "source_url": "https://www.malaffi.ae/privacy-notice/"
+                },
+                {
+                  "excerpt_id": "doh_patient_data_privacy_std::0016",
+                  "quote": "Patients shall have the authority for selective disclosure of their health information to entities (e.g. hospitals, health care providers etc.) as deemed necessary.",
+                  "supports": "Patient selective-disclosure choices must be respected.",
+                  "verified": true,
+                  "document": "DOH Standard on Patient Healthcare Data Privacy",
+                  "source_url": "https://staticcdn.malaffi.ae/wpblobe9e5523f25/2021/02/2020-09-15-DOH-Standard-on-Patient-Healthcare-Data-Privacy-for-publication-2.pdf"
+                },
+                {
+                  "excerpt_id": "doh_patient_data_privacy_std::0016",
+                  "quote": "Entities shall adopt the principles of ‘need to know’ and ‘least privilege’.",
+                  "supports": "Share only the minimum necessary.",
+                  "verified": true,
+                  "document": "DOH Standard on Patient Healthcare Data Privacy",
+                  "source_url": "https://staticcdn.malaffi.ae/wpblobe9e5523f25/2021/02/2020-09-15-DOH-Standard-on-Patient-Healthcare-Data-Privacy-for-publication-2.pdf"
+                }
+              ],
+              "evidence_sufficient": true
+            },
+            "citation_check": {
+              "total": 8,
+              "verified": 8,
+              "unverified_ids": []
+            },
+            "llm": {
+              "model": "claude-opus-5-5",
+              "effort": "medium",
+              "stop_reason": "end_turn",
+              "input_tokens": 6603,
+              "output_tokens": 2357,
+              "latency_s": 21.39
+            }
+          },
+          {
+            "agent": "DHA",
+            "authority": "Dubai Health Authority (DHA)",
+            "partition": "DHA",
+            "query": "May a licensed healthcare facility in Abu Dhabi share an identifiable patient's health records with a licensed healthcare facility in Dubai for continuing treatment, and what consent or conditions apply? treatment clinical_record lab_results imaging || patient consent sharing disclosure of health information transfer of medical record to another entity for continuing care and treatment",
+            "retrieved": [
+              {
+                "excerpt_id": "dha_health_info_sharing_policy::0021",
+                "title": "Policy for Health Data and Information Sharing",
+                "distance": 0.5923
+              },
+              {
+                "excerpt_id": "dha_health_info_sharing_policy::0050",
+                "title": "Policy for Health Data and Information Sharing",
+                "distance": 0.6279
+              },
+              {
+                "excerpt_id": "dha_consent_access_control_std::0023",
+                "title": "Standards for Health Information Consent and Access Control",
+                "distance": 0.694
+              },
+              {
+                "excerpt_id": "dha_health_info_sharing_policy::0017",
+                "title": "Policy for Health Data and Information Sharing",
+                "distance": 0.6969
+              },
+              {
+                "excerpt_id": "dha_health_data_protection_policy::0011",
+                "title": "Policy for Data and Health Information Protection and Confidentiality",
+                "distance": 0.6979
+              },
+              {
+                "excerpt_id": "dha_nabidh_policies_standards::0095",
+                "title": "NABIDH Policies and Standards",
+                "distance": 0.6993
+              },
+              {
+                "excerpt_id": "dha_health_info_sharing_policy::0016",
+                "title": "Policy for Health Data and Information Sharing",
+                "distance": 0.7082
+              },
+              {
+                "excerpt_id": "dha_health_data_protection_policy::0013",
+                "title": "Policy for Data and Health Information Protection and Confidentiality",
+                "distance": 0.718
+              },
+              {
+                "excerpt_id": "dha_health_info_sharing_policy::0038",
+                "title": "Policy for Health Data and Information Sharing",
+                "distance": 0.7732
+              },
+              {
+                "excerpt_id": "dha_health_info_sharing_policy::0029",
+                "title": "Policy for Health Data and Information Sharing",
+                "distance": 0.7777
+              }
+            ],
+            "assessment": {
+              "decision": "PERMIT_WITH_CONDITIONS",
+              "summary": "DHA rules allow identifiable treatment records to be shared between licensed UAE entities for continuing care, but only with patient consent. That consent can come through a referral process with clear signed consent, or through health information exchange (Nabidh, Malaffi, Riayati) with patient consent. Where the receiving entity requests the record on a transfer of care, separate patient consent is required. No consent recognised under DHA requirements has been shown for this step. Whether the DOH-recorded consent satisfies DHA has not been confirmed.",
+              "applies_because": "The receiving hospital is DHA-licensed in Dubai. DHA policies cover all entities under DHA jurisdiction and expressly address sharing PHI between entities in the UAE for care purposes. The data categories (clinical records, lab results, imaging) fall within DHA's definition of health information.",
+              "conditions": [
+                "Patient consent must be in place for the transfer. Acceptable routes are a referral process with clear signed consent, or exchange via HIE (Nabidh, Malaffi, Riayati) with patient consent.",
+                "If the Dubai hospital requests the record from the Abu Dhabi hospital on a transfer of care, separate patient consent is required for that request.",
+                "Consent must meet DHA requirements under the Consent & Access Control Policy.",
+                "Only PHI relevant to the necessities of direct care should be shared (clinical record, labs, imaging limited to what treatment needs).",
+                "If PHI is sent by email, the email must be appropriately encrypted or use authenticated portal links, and must be sent from official entity-issued accounts."
+              ],
+              "unmet_conditions": [
+                "No evidence of a clear signed patient consent recognised under DHA requirements (Consent & Access Control Policy) for this inter-entity transfer.",
+                "No evidence of the sharing route used (referral process, or HIE exchange via Nabidh/Malaffi/Riayati).",
+                "No evidence of separate patient consent for a request by the Dubai hospital to the Abu Dhabi hospital, if the transfer is initiated that way."
+              ],
+              "open_questions": [
+                "Does a treatment consent recorded under DOH (e.g., via Malaffi) satisfy DHA's 'clear signed consent' and Consent & Access Control Policy requirements? The excerpts do not say whether DHA recognises consent recorded under another regulator.",
+                "Policy 4.3.1 suggests consent is needed for sharing 'other than direct provision of health care', while the 4.6.5 table requires consent for inter-entity UAE care sharing. The excerpts do not fully reconcile these provisions.",
+                "Is the record being transferred directly with the patient (patient transferring his/her own information), or via request from the Dubai entity? The consent requirement differs between these routes."
+              ],
+              "citations": [
+                {
+                  "excerpt_id": "dha_health_info_sharing_policy::0021",
+                  "quote": "request from the other Entity (separate Patient consent is required in this case).",
+                  "supports": "Separate patient consent is required when the receiving entity requests the record on a transfer of care.",
+                  "verified": true,
+                  "document": "Policy for Health Data and Information Sharing",
+                  "source_url": "https://nabidh.dha.gov.ae/cms/uploads/3652b370cb92403191417e920ab0f343.pdf"
+                },
+                {
+                  "excerpt_id": "dha_health_info_sharing_policy::0021",
+                  "quote": "with clear signed",
+                  "supports": "Referral between UAE entities not in the same organization requires clear signed consent.",
+                  "verified": true,
+                  "document": "Policy for Health Data and Information Sharing",
+                  "source_url": "https://nabidh.dha.gov.ae/cms/uploads/3652b370cb92403191417e920ab0f343.pdf"
+                },
+                {
+                  "excerpt_id": "dha_health_info_sharing_policy::0021",
+                  "quote": "Nabidh, Malaffi,",
+                  "supports": "HIE exchange across UAE platforms (with patient consent) is a recognised sharing route.",
+                  "verified": true,
+                  "document": "Policy for Health Data and Information Sharing",
+                  "source_url": "https://nabidh.dha.gov.ae/cms/uploads/3652b370cb92403191417e920ab0f343.pdf"
+                },
+                {
+                  "excerpt_id": "dha_health_info_sharing_policy::0017",
+                  "quote": "Consent should be as per DHA requirements (Consent & Access Control Policy).",
+                  "supports": "Consent must meet DHA's own consent requirements.",
+                  "verified": true,
+                  "document": "Policy for Health Data and Information Sharing",
+                  "source_url": "https://nabidh.dha.gov.ae/cms/uploads/3652b370cb92403191417e920ab0f343.pdf"
+                },
+                {
+                  "excerpt_id": "dha_consent_access_control_std::0023",
+                  "quote": "All relevant PHI should be accessed and shared as per necessities of direct care to",
+                  "supports": "Sharing should be limited to what direct care requires.",
+                  "verified": true,
+                  "document": "Standards for Health Information Consent and Access Control",
+                  "source_url": "https://nabidh.dha.gov.ae/cms/uploads/2e5de3bcf44943dd9f1980f283101b4c.pdf"
+                },
+                {
+                  "excerpt_id": "dha_health_data_protection_policy::0011",
+                  "quote": "All Entities working under jurisdiction of DHA.",
+                  "supports": "DHA rules govern the DHA-licensed receiving hospital.",
+                  "verified": true,
+                  "document": "Policy for Data and Health Information Protection and Confidentiality",
+                  "source_url": "https://www.dha.gov.ae/uploads/082022/Health%20Data%20Protection%20and%20Confidentiality%20Policy_EN2022810559.pdf"
+                },
+                {
+                  "excerpt_id": "dha_health_info_sharing_policy::0016",
+                  "quote": "X-ray and imaging reports, output and images.",
+                  "supports": "Imaging data is covered health information.",
+                  "verified": true,
+                  "document": "Policy for Health Data and Information Sharing",
+                  "source_url": "https://nabidh.dha.gov.ae/cms/uploads/3652b370cb92403191417e920ab0f343.pdf"
+                },
+                {
+                  "excerpt_id": "dha_health_info_sharing_policy::0038",
+                  "quote": "Health data and information should only be disclosed when the consent of the Data",
+                  "supports": "Disclosure generally requires patient consent.",
+                  "verified": true,
+                  "document": "Policy for Health Data and Information Sharing",
+                  "source_url": "https://nabidh.dha.gov.ae/cms/uploads/3652b370cb92403191417e920ab0f343.pdf"
+                },
+                {
+                  "excerpt_id": "dha_health_info_sharing_policy::0029",
+                  "quote": "Protected Health Information should only be sent via email if it is appropriately",
+                  "supports": "Email transfer must be appropriately encrypted.",
+                  "verified": true,
+                  "document": "Policy for Health Data and Information Sharing",
+                  "source_url": "https://nabidh.dha.gov.ae/cms/uploads/3652b370cb92403191417e920ab0f343.pdf"
+                }
+              ],
+              "evidence_sufficient": true
+            },
+            "citation_check": {
+              "total": 9,
+              "verified": 9,
+              "unverified_ids": []
+            },
+            "llm": {
+              "model": "claude-opus-5-5",
+              "effort": "medium",
+              "stop_reason": "end_turn",
+              "input_tokens": 6295,
+              "output_tokens": 2523,
+              "latency_s": 23.71
+            }
+          },
+          {
+            "agent": "FEDERAL",
+            "authority": "UAE federal law and federal health policy (incl. MOHAP)",
+            "partition": "FEDERAL",
+            "query": "May a licensed healthcare facility in Abu Dhabi share an identifiable patient's health records with a licensed healthcare facility in Dubai for continuing treatment, and what consent or conditions apply? treatment clinical_record lab_results imaging || patient consent sharing disclosure of health information transfer of medical record to another entity for continuing care and treatment",
+            "retrieved": [
+              {
+                "excerpt_id": "fed_law_2_2019::0011",
+                "title": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                "distance": 0.8738
+              },
+              {
+                "excerpt_id": "fed_law_2_2019::0010",
+                "title": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                "distance": 0.9434
+              },
+              {
+                "excerpt_id": "fed_ai_strategy_2031::0049",
+                "title": "UAE National Strategy for Artificial Intelligence 2031",
+                "distance": 0.964
+              },
+              {
+                "excerpt_id": "fed_law_2_2019::0008",
+                "title": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                "distance": 0.9933
+              },
+              {
+                "excerpt_id": "fed_law_2_2019::0006",
+                "title": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                "distance": 1.0074
+              },
+              {
+                "excerpt_id": "fed_ai_strategy_2031::0025",
+                "title": "UAE National Strategy for Artificial Intelligence 2031",
+                "distance": 1.0155
+              },
+              {
+                "excerpt_id": "fed_ai_strategy_2031::0047",
+                "title": "UAE National Strategy for Artificial Intelligence 2031",
+                "distance": 1.0504
+              },
+              {
+                "excerpt_id": "fed_ai_strategy_2031::0026",
+                "title": "UAE National Strategy for Artificial Intelligence 2031",
+                "distance": 1.0542
+              },
+              {
+                "excerpt_id": "fed_ai_strategy_2031::0024",
+                "title": "UAE National Strategy for Artificial Intelligence 2031",
+                "distance": 1.0821
+              },
+              {
+                "excerpt_id": "fed_law_2_2019::0009",
+                "title": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                "distance": 1.0894
+              }
+            ],
+            "assessment": {
+              "decision": "PERMIT_WITH_CONDITIONS",
+              "summary": "Federal Law No. 2 of 2019 governs ICT-based exchange of health information anywhere in the UAE, so it covers this Abu Dhabi-to-Dubai transfer. Article 16 lets an identifiable record be exchanged only for health purposes, kept confidential, and with the patient's written consent unless a listed exception applies. Exception 3 ('to maintain the health and safety of the patients') may cover continuing treatment, but the excerpts do not say so expressly. The safe course is to confirm that the DOH-recorded treatment consent is in writing and covers disclosure to the Dubai hospital. The Article 13 ban on transfers outside the country is not triggered, because the receiver is in the UAE. The federal excerpts are silent on whether a DHA facility must recognise a DOH-recorded consent. This is an assessment for human review, not legal advice.",
+              "applies_because": "Federal Law No. 2 of 2019 applies to all uses of ICT in health fields across the UAE, including free zones. Its definition of exchange of health information covers transfer and disclosure of health data, so an electronic handoff of clinical records, lab results and imaging between two UAE facilities falls within it.",
+              "conditions": [
+                "The receiving hospital must keep the patient information confidential.",
+                "The information may be used only for health purposes (here, continuing treatment).",
+                "The patient's written consent is required unless an Article 16 exception applies (for example, maintaining the patient's health and safety).",
+                "The data must stay within the UAE; storage or transfer outside the country requires a health-authority decree issued in coordination with the Ministry.",
+                "If the exchange goes through the federal central system, authorised users must handle only the information needed for the specified purpose and exchange it only with authorised individuals."
+              ],
+              "unmet_conditions": [
+                "Written patient consent covering disclosure to the receiving Dubai (DHA-licensed) hospital is not shown. The tracker records a treatment consent under DOH, but it does not show whether that consent is written or whether it extends to this receiver. Alternatively, the parties would need to document reliance on an Article 16 exception."
+              ],
+              "open_questions": [
+                "Does Article 16 exception 3 ('to maintain the health and safety of the patients') cover routine continuity-of-care sharing between providers, removing the need for written consent? The excerpts do not say expressly.",
+                "Is a consent recorded under DOH rules valid federally for disclosure to a DHA-licensed facility? The federal excerpts do not address recognition of consent between emirates.",
+                "Will the exchange use the federal central system or another channel? Articles 8 and 15 duties apply to central-system users, and the detailed conditions are left to an executive decree that is not in the knowledge base.",
+                "Do Ministry or health-authority mechanisms for exchanging health data (Article 10(5)) impose further procedural requirements? These are not included in the excerpts."
+              ],
+              "citations": [
+                {
+                  "excerpt_id": "fed_law_2_2019::0006",
+                  "quote": "This law applies to all methods and uses of ICTs in the health fields in the country, including free zones.",
+                  "supports": "The federal ICT health law governs this intra-UAE electronic exchange.",
+                  "verified": true,
+                  "document": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                  "source_url": "https://www.dha.gov.ae/uploads/082022/Federal%20Law%20No2022824434.pdf"
+                },
+                {
+                  "excerpt_id": "fed_law_2_2019::0006",
+                  "quote": "Exchange of Health information: access, exchange, copying, photocopying, transfer, storage, publication, disclosure or transmission of health data and information.",
+                  "supports": "Transferring the records to another hospital is an exchange of health information under the law.",
+                  "verified": true,
+                  "document": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                  "source_url": "https://www.dha.gov.ae/uploads/082022/Federal%20Law%20No2022824434.pdf"
+                },
+                {
+                  "excerpt_id": "fed_law_2_2019::0011",
+                  "quote": "anyone who exchanges and circulates patient information must ensure its confidentiality and not use it for non-health purposes, and without the written consent of the patient, except in the following cases:",
+                  "supports": "Sets the confidentiality, health-purpose-only and written-consent requirements.",
+                  "verified": true,
+                  "document": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                  "source_url": "https://www.dha.gov.ae/uploads/082022/Federal%20Law%20No2022824434.pdf"
+                },
+                {
+                  "excerpt_id": "fed_law_2_2019::0011",
+                  "quote": "3. The Purpose of preventive and curative measures related to public health, or to maintain the health and safety of the patients or any other persons in contact with them.",
+                  "supports": "A possible exception to written consent for treatment-related sharing; whether it applies here is unclear.",
+                  "verified": true,
+                  "document": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                  "source_url": "https://www.dha.gov.ae/uploads/082022/Federal%20Law%20No2022824434.pdf"
+                },
+                {
+                  "excerpt_id": "fed_law_2_2019::0010",
+                  "quote": "It is not permitted to store, develop, or transfer data and health information outside the country that is related to health services provided within the country",
+                  "supports": "Restricts transfers outside the UAE; not triggered because the receiver is in the UAE.",
+                  "verified": true,
+                  "document": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                  "source_url": "https://www.dha.gov.ae/uploads/082022/Federal%20Law%20No2022824434.pdf"
+                },
+                {
+                  "excerpt_id": "fed_law_2_2019::0010",
+                  "quote": "(A) Dealing with the information only necessary for the performance of the work or purpose specified.",
+                  "supports": "Minimum-necessary duty for authorised central-system users.",
+                  "verified": true,
+                  "document": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                  "source_url": "https://www.dha.gov.ae/uploads/082022/Federal%20Law%20No2022824434.pdf"
+                },
+                {
+                  "excerpt_id": "fed_law_2_2019::0010",
+                  "quote": "(B) Exchange of information with authorized individuals only.",
+                  "supports": "Central-system users may exchange information only with authorised individuals.",
+                  "verified": true,
+                  "document": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                  "source_url": "https://www.dha.gov.ae/uploads/082022/Federal%20Law%20No2022824434.pdf"
+                }
+              ],
+              "evidence_sufficient": true
+            },
+            "citation_check": {
+              "total": 7,
+              "verified": 7,
+              "unverified_ids": []
+            },
+            "llm": {
+              "model": "claude-opus-5-5",
+              "effort": "medium",
+              "stop_reason": "end_turn",
+              "input_tokens": 5976,
+              "output_tokens": 2211,
+              "latency_s": 20.83
+            }
+          }
+        ],
+        "outcome": "PAUSE",
+        "reasons": [
+          "DOH: 2 condition(s) still to be met",
+          "DHA: 3 condition(s) still to be met",
+          "FEDERAL: 1 condition(s) still to be met"
+        ],
+        "data_released": false
+      }
+    ],
+    "gap_register": [
+      {
+        "type": "CONSENT_CHAIN_GAP",
+        "step": "1",
+        "detail": "Consent for 'treatment' was recorded under DOH; the receiving party is under DHA. Whether the receiving regulator recognises that consent must be checked."
+      }
+    ],
+    "patient_plan": {
+      "agent": "NAVIGATOR",
+      "plan": {
+        "language": "en",
+        "headline": "Your records have not been sent yet: your signed consent is needed first",
+        "status_in_plain_words": "Sending your medical records from Abu Dhabi to your new hospital in Dubai is paused. All three regulators (Abu Dhabi DOH, Dubai DHA, and federal) allow this transfer for continuing treatment, but only once certain conditions are met. Right now there is no signed written consent from you showing that you agree to share your records with the Dubai hospital. It is also not yet clear which sharing route will be used (a referral, or a health exchange system such as Malaffi or Nabidh). The rules do not yet cover whether a consent you gave in Abu Dhabi automatically counts in Dubai. No data has been released.",
+        "what_you_need_to_do": [
+          "Sign a written consent that names your new Dubai hospital as the receiver of your records.",
+          "Tell the hospitals if you want to limit which facilities can see your records.",
+          "Ask both hospitals which route they will use: a referral or a health information exchange (Malaffi, Nabidh, Riayati).",
+          "If the Dubai hospital requests your records itself, be ready to give a separate consent for that request."
+        ],
+        "what_happens_next": "Once your consent and the sharing route are confirmed, the transfer can go ahead. Only the information needed for your treatment will be shared, and it will stay within the UAE.",
+        "disclaimer": "This is a research prototype, not legal or medical advice."
+      },
+      "llm": {
+        "model": "claude-opus-5-5",
+        "effort": "medium",
+        "stop_reason": "end_turn",
+        "input_tokens": 2666,
+        "output_tokens": 475,
+        "latency_s": 6.19
+      }
+    }
+  }
+}

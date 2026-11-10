@@ -1,0 +1,509 @@
+SOURCE: https://www.dha.gov.ae/uploads/082022/Federal%20Law%20No2022824434.pdf | ACCESSED: 2026-11-10
+
+An Introductory
+
+Federal Law No. (2) For
+the year 2019
+On the Use of Information
+and Communications
+Technology (ICT) in
+Healthcare
+
+2019
+
+Public Health Policies Department
+Public health Policy and Licensing Sector
+
+1
+
+Introduction
+
+Given the developments in the world in various
+fields, it is clear that the quality of health care has
+become linked to the need to shift to the use of
+advanced technical systems in providing health
+services to achieve the best results of care.
+
+•
+
+On this basis, this law was developed in cooperation
+between the Ministry and all concerned authorities,
+setting the necessary controls to ensure the use of
+information and communication technology in the
+best conditions and to make maximum use of them
+to provide appropriate health service to the patient
+and to facilitate communication between all clients
+in health affairs.
+
+•
+
+•
+
+The law provides for the establishment of a unified
+central system, which will facilitate the process of
+electronic exchange between the various providers
+of health services while maintaining the safety and
+security of the data and information ensuring its
+privacy protection.
+
+2
+
+Aim
+1. Ensuring the optimal use of information and communications technology in the
+health field.
+2. Ensuring that the bases, standards and practices adopted are in line with their
+internationally adopted counterparts.
+3. Enabling the Ministry to collect, analyze and maintain health information at the
+country level.
+4. Ensuring the security and safety of health data and information.
+3
+
+We, Khalifa Bin Zayed Al Nahyan, President of the United Arab Emirates,
+After perusal of the Constitution, and the following legislations:
+Federal Law No. (1) for the year 1972 concerning the terms of
+reference of the ministries and the authority of the ministers, and its
+amendments,
+Federal Law No. (7) for the year 1975 regarding the practice of the
+profession of human medicine, and its amendments,
+Federal Law No. (15) for the year 1980 regarding publications and
+publishing,
+Federal Law No. (4) of 1983 regarding the profession of pharmacy and
+pharmaceutical institutions,
+Federal Law No. (5) of 1984 regarding the practice of non-physicians
+and pharmacists for some medical professions,
+Federal Law No. 3 of 1987 promulgating the Penal Code, and its
+amendments,
+Federal Law No. 11 of 1992 promulgating the Code of Civil Procedure,
+and its amendments,
+Federal Law No. (35) of 1992 promulgating the Code of Criminal
+Procedure and its amendments,
+Federal Law No. (8) of 2004 regarding the Financial Free Zones,
+Federal Law No. (1) for the year 2006 regarding transactions and
+electronic commerce,
+Federal Law No. (9) for the year 2006 regarding the Population
+Registration system and Identity Card, and its amendments
+Federal Law No. (6) for the year 2007 regarding the establishment of
+the Insurance Authority and the organization of its work, and its
+amendments,
+Federal Law No. (11) of 2008 regarding the licensing of fertility centers
+in the country,
+Federal Law No. (18) for the year 2009 regarding the regulation of
+registration of births and deaths,
+4
+
+Federal Law No. (3) of 2012 establishing the
+National Authority for Electronic Security,
+Federal Law No. (5) for the year 2012 regarding
+combating of information technology crimes and
+its amendments,
+Federal Law No. 14 of 2014 on the Control of
+Communicable Diseases,
+Federal Law No. (4) for the year 2015 concerning
+private health facilities,
+Federal Law No. (4) of 2016 on Medical liability,
+Federal Law No. (14) of 2016 on irregularities and
+administrative penalties in the federal
+government
+Federal Law No. 16 of 2016 establishing the
+Emirates Health Services Corporation,
+In addition, Based on what the Minister of Health
+and Prevention presented, the approval of the
+Cabinet and the Federal National Council, and the
+ratification of the Federal Supreme Council,
+
+We have issued the following law:
+5
+
+Chapter I
+Definitions and General Provisions
+Article (1)
+
+In the application of the provisions of this Law, the
+following words and expressions shall have the
+meanings indicated, unless the context otherwise
+requires:
+Country: United Arab Emirates.
+Ministry: Ministry of Health and Prevention.
+Minister: Minister of Health and Prevention.
+Health Authority: Any federal or local
+governmental body concerned with health affairs in
+the country.
+Concerned Authority: Any authority or entity in the
+country providing health services, health insurance
+services, facilitation, claims management,
+electronic health services, or any entity directly or
+indirectly associated with the application of the
+provisions of this law.
+Person: a natural or arbitrary person.
+System: A set of electronic data and health
+information exchange operations, involving a set of
+electronic parts or components that link together
+and work together to achieve a specific goal.
+6
+
+Data: All that can be stored, processed,
+generated and transferred by ICT such as
+numbers, letters, symbols, images and the like.
+Health Information: Health data processed and
+made apparent and evident whether visible,
+audible or readable, and which are of a health
+nature whether related to health facilities,
+health or insurance facilities or beneficiaries of
+health services.
+Processing: Creating, entering, modifying,
+updating or deleting information electronically.
+Exchange of Health information: access,
+exchange, copying, photocopying, transfer,
+storage, publication, disclosure or transmission
+of health data and information.
+Professional Guidelines: A description of the
+methods, actions and procedures used as a
+guidance.
+Information and communication technology:
+technical or electronic tools or systems or other
+means that enable the processing of
+information and data of all types, including the
+possibility of storage, retrieval, dissemination
+and exchange.
+7
+
+Article (2)
+This law applies to all methods and uses of
+ICTs in the health fields in the country,
+including free zones.
+
+Article (3)
+This law aims for the following:
+1. Ensuring the optimal use of information
+and communications technology in the
+health field.
+2. Ensuring that the bases, standards and
+practices adopted are in line with their
+internationally adopted counterparts.
+3. Enabling the Ministry to collect, analyze
+and maintain health information at the
+country level.
+4. Ensuring the security and safety of health
+data and information.
+8
+
+.
+
+Chapter II
+ICT usage control
+Article (4)
+When using ICT in health fields, the following must
+be adhered to:
+1. To maintain the confidentiality of health data
+and information by not allowing them to be
+traded or exchanged in other than authorized
+cases.
+2 - To ensure the validity and credibility of health
+data and information by maintaining safety from
+vandalism, damage, modification, alteration or
+unauthorized deletion.
+3. To ensure the availability of health data and
+information to the authorized individuals and to
+facilitate access to it when needed.
+
+Article (5)
+The Ministry shall establish the central system in
+coordination with the concerned authority for the
+conservation, exchange and compilation of health
+data and information.
+9
+
+Article (6)
+The health authority shall establish the rules,
+standards and standards for its electronic health data
+and information systems, such as its methods of
+operation, data exchange, protection, access, copying,
+changes, auditing, safe and sound use and health
+information risk management.
+
+Article (7)
+The health authority and the concerned authority
+shall adhere to the central system, in accordance with
+the controls and procedures specified by the
+executive decree of this law.
+
+Article (8)
+1- The entities authorized to use the central system
+shall comply with the following:
+(A) Identification of individuals authorized to access
+and exchange information within health systems,
+databases, and to indicate their authorities.
+(B) Confirm all necessary measures to ensure the
+protection and safety of health data and information
+and its confidentiality.
+2- The Executive decree shall provide procedures
+determined to execute provisions of this article
+10
+
+Article (9)
+A Ministerial Decree in coordination with the health
+authorities shall determine the authority authorized
+to publish and distribute the professional guidelines
+through the central system.
+
+Article (10)
+The Ministry shall coordinate with the concerned
+authority the following:
+1. Develop and implement a national strategic plan
+for the use of ICT in the health field.
+2. Establish mandatory mechanisms and procedures
+for the use of ICTs in health fields in accordance with
+the provisions of this law and the laws in force in the
+country.
+3. Implement and evaluate initiatives and programs
+identified in the strategy and the technical standards.
+4 - Setting the controls, standards and procedures for
+electronic operational programs used in linkage of the
+diagnostic and treatment devices in establishments
+providing health services.
+5. Develop mechanisms and procedures for the
+exchange and circulation of health data and
+information.
+11
+
+Article (11)
+The health authority and the concerned
+authority each within its competence shall
+ensure the validity, credibility and accessibility
+of health data and information in such a
+manner as to ensure that the information
+systems used and their interoperability are
+compatible with the exchange and compilation
+of health data and information.
+
+Article (12)
+A Ministerial Decree in coordination with the
+health authorities shall determine the
+conditions and controls for storage of health
+data and information within the country.
+
+Article (13)
+It is not permitted to store, develop, or transfer
+data and health information outside the
+country that is related to health services
+provided within the country, except in cases
+where a decree is issued by the health
+authority in coordination with the ministry.
+12
+
+Article (14)
+No individual may use the central system unless he is
+authorized to do so by the health authority or the
+concerned authority, as determined by the executive
+decree of this law.
+
+Article (15)
+1. Individuals authorized to use the central system
+shall comply with the following:
+
+(A) Dealing with the information only necessary for the
+performance of the work or purpose specified.
+(B) Exchange of information with authorized individuals only.
+(C) Not to delete or modify data and health information
+except in accordance with the specified conditions.
+
+(D) Not to publish data and health information as
+well as statistics related to the health field except in
+accordance with the specified conditions.
+2. The Executive Decree of this Law shall specify the
+conditions and controls for the implementation of
+the provisions of this Article.
+13
+
+Article (16)
+Without prejudice to any applicable legislation,
+anyone who exchanges and circulates patient
+information must ensure its confidentiality and not
+use it for non-health purposes, and without the
+written consent of the patient, except in the following
+cases:
+1. Data or health information required by the health
+insurance companies or any provider of health
+services in respect of the health services received by
+the patient for purposes of auditing, approving or
+verifying the financial benefits related to those
+services.
+2. The purposes of scientific and clinical research,
+provided that the patient's identity is not disclosed
+and that the ethics and rules of scientific research are
+followed.
+3. The Purpose of preventive and curative measures
+related to public health, or to maintain the health and
+safety of the patients or any other persons in contact
+with them.
+4. At the request of the competent judicial
+authorities.
+5. At the request of the health authority for the
+purposes of inspection, supervision and protection of
+public health.
+14
+
+Article (17)
+The Central System may not be used to publish
+any health declaration or announcement
+without obtaining an authorization from the
+Ministry.
+
+Article (18)
+The Ministry may, in accordance with its
+established procedures, request the concerned
+authority to prohibit or block electronic
+websites, whether inside or outside the
+country, that violate the regulations and
+standards of health advertisements in the
+Country or provide advertisements or health
+information without a permit or license from
+the Ministry.
+
+Article (19)
+The Health Authority shall train and qualify
+human resources and provide the necessary
+resources and suitable environment in order to
+ensure the safety of health data and
+information in accordance with international
+best practices.
+15
+
+Article (20)
+1 – The storage and conservation of health data and
+information by means of information and communication
+technology shall requisite the following:
+(A) The conservation period shall be commensurate with
+the need for health data and information, provided that
+the conservation period shall not be less than (25) years
+from the date of the last health procedure of the person
+concerned with such data and health information.
+(B) To ensure the confidentiality, validity and credibility of
+data and information;
+2. The executive decree of this law shall specify the rules
+and procedures for implementing the provisions of this
+article.
+
+Article (21)
+The health authority and the concerned authority
+shall be obliged to verify and keep the identity
+number in all transactions, records and health
+files, and to use them in organizing and saving
+them, except in cases of emergency and other
+cases issued by a decision of the Minister with
+coordination with the health authorities.
+Article (22)
+The penalties provided for in this Law shall not
+prejudice any more intense penalty provided for in
+any other law.
+16
+
+Chapter III
+Penalties
+Article (23)
+A fine of not less than (100,000) one hundred
+thousand dirhams and not more than (200,000)
+two hundred thousand dirhams shall be
+imposed on anyone who has published a health
+advertisement through the system without a
+license.
+
+Article (24)
+Breaching the provisions of Article (13) of
+this Law shall lead to penalizing by a fine not
+less than (500,000) five hundred thousand
+dirhams and not exceeding (700.000) seven
+hundred thousand dirhams.
+17
+
+Article (25)
+Without prejudice to penal penalties
+established in this law or any other law, the
+health authority may according to its
+jurisdiction, penalize establishments that
+provide health services or work in the field of
+health research, or establishments authorized
+to use the central system, and contravene the
+provisions of this law or its executive
+regulations or decrees issued in pursuance of
+any of the following disciplinary sanctions,
+thereof:
+A – Written alert.
+B – Written Warning.
+C- A fine of not less than (1000) thousand
+dirhams and not more than (1.000.000) one
+million dirhams.
+D- Temporary Suspension of the license to use
+the central system for a period not exceeding
+six months.
+E- Cancellation of the license to use the central
+system.
+18
+
+Article (26)
+1. A committee shall be set up at the health
+authority to examine grievances against
+disciplinary sanctions. The committee shall be
+formed, its competences shall be determined and
+the manner of submission of grievances shall be
+determined by a decision of the health authority.
+2. An individual against whom a disciplinary
+sanction has been issued in accordance with
+Article (25) of this Law may appeal against the
+decision to the Grievance Committee formed by
+the Health Authority within fifteen (15) days from
+the date of the applicant's knowledge of the
+decision.
+3. The appeal shall be decided within thirty (30)
+days from the date of its submission. Failure to
+respond to the appeal during that period shall be
+regarded as a rejection.
+4. The decision issued in the appeal shall be final.
+5. A person whose appeal has been rejected may
+appeal before the competent courts of the
+country within thirty days from the date of his
+notification of the rejection of the appeal or the
+expiry of the 30-day period referred to in item (2)
+of this article.
+19
+
+Chapter IV
+Final Provisions
+Article (27)
+The staff members appointed by a decree
+of the Minister of Justice in agreement
+with the Minister or the health authorities
+shall have the status of law enforcement
+officers in proving what is in violation of
+the provisions of this law and the decrees
+issued in implementation thereof within
+the scope of their respective competence.
+
+Article (28)
+The concerned authority shall adjust its
+conditions in accordance with the provisions
+of this law within the period specified by a
+Cabinet Decree.
+20
+
+Article (29)
+The Cabinet shall, upon the proposal of the
+Minister, issue the executive decree of this Law,
+within 6 month of publication date.
+
+Article (30)
+Any provision contrary to or inconsistent with
+the provisions of this Law is repealed.
+
+Article (31)
+This Law shall be published in the official
+Gazette and shall come into effect three
+months after the date of its publication.
+
+Khalifa bin Zayed Al Nahyan
+President of the United Arab Emirates
+21
+
+Thank you
+
+22

@@ -1,0 +1,807 @@
+{
+  "scenario": {
+    "id": "s2_research_reuse",
+    "title": "Secondary use: the same record reused for AI model training",
+    "note": "Simulated scenario. Entities are generic; no real patient or facility data.",
+    "language": "en",
+    "patient_request": "I only agreed to share my records for my treatment. I want to know who else can use them.",
+    "consents": [
+      {
+        "id": "c1",
+        "granted_to": "Origin hospital (DoH-licensed, Abu Dhabi)",
+        "recorded_under": "DOH",
+        "purposes": [
+          "treatment"
+        ],
+        "data_categories": [
+          "clinical_record",
+          "lab_results",
+          "imaging"
+        ]
+      }
+    ],
+    "steps": [
+      {
+        "id": "1",
+        "title": "Dubai hospital shares de-identified record with an AI research partner",
+        "from_entity": "Receiving hospital (DHA-licensed, Dubai)",
+        "from_jurisdiction": "DHA",
+        "to_entity": "AI research partner (Dubai)",
+        "to_jurisdiction": "DHA",
+        "to_location": "UAE",
+        "purpose": "research_ai_training",
+        "data_categories": [
+          "clinical_record",
+          "imaging"
+        ],
+        "deidentified": true,
+        "question": "May a healthcare facility share patient health data, described as de-identified, with a research partner to train an AI model, when the patient consented only to treatment?"
+      },
+      {
+        "id": "2",
+        "title": "Research partner processes the data on a cloud server outside the UAE",
+        "from_entity": "AI research partner (Dubai)",
+        "from_jurisdiction": "DHA",
+        "to_entity": "Cloud processing provider (outside the UAE)",
+        "to_jurisdiction": "OUTSIDE_UAE",
+        "to_location": "OUTSIDE_UAE",
+        "purpose": "research_ai_training",
+        "data_categories": [
+          "clinical_record",
+          "imaging"
+        ],
+        "deidentified": true,
+        "question": "May health data be stored or processed outside the UAE for AI model training, and under what conditions?"
+      }
+    ]
+  },
+  "run_at": "2026-11-10T19:12:02+00:00",
+  "model": "claude-opus-5-5",
+  "effort": "medium",
+  "kb_fingerprint": "48837ef86e4ad24e",
+  "result": {
+    "mode": "governed",
+    "steps": [
+      {
+        "step": {
+          "id": "1",
+          "title": "Dubai hospital shares de-identified record with an AI research partner",
+          "from_entity": "Receiving hospital (DHA-licensed, Dubai)",
+          "from_jurisdiction": "DHA",
+          "to_entity": "AI research partner (Dubai)",
+          "to_jurisdiction": "DHA",
+          "to_location": "UAE",
+          "purpose": "research_ai_training",
+          "data_categories": [
+            "clinical_record",
+            "imaging"
+          ],
+          "deidentified": true,
+          "question": "May a healthcare facility share patient health data, described as de-identified, with a research partner to train an AI model, when the patient consented only to treatment?"
+        },
+        "consent_findings": [
+          {
+            "code": "PURPOSE_NOT_COVERED",
+            "severity": "HIGH",
+            "detail": "Proposed purpose 'research_ai_training' is not in any recorded consent (recorded purposes: treatment)."
+          },
+          {
+            "code": "DEIDENTIFIED_CLAIM",
+            "severity": "INFO",
+            "detail": "Sender states the data is de-identified; each regulator's definition must be checked."
+          }
+        ],
+        "assessments": [
+          {
+            "agent": "DHA",
+            "authority": "Dubai Health Authority (DHA)",
+            "partition": "DHA",
+            "query": "May a healthcare facility share patient health data, described as de-identified, with a research partner to train an AI model, when the patient consented only to treatment? research_ai_training clinical_record imaging || patient consent sharing disclosure of health information scientific and clinical research purposes secondary use || de-identified anonymised pseudonymised data secondary use",
+            "retrieved": [
+              {
+                "excerpt_id": "dha_consent_access_control_std::0023",
+                "title": "Standards for Health Information Consent and Access Control",
+                "distance": 0.6553
+              },
+              {
+                "excerpt_id": "dha_health_info_sharing_policy::0012",
+                "title": "Policy for Health Data and Information Sharing",
+                "distance": 0.6947
+              },
+              {
+                "excerpt_id": "dha_health_info_sharing_policy::0050",
+                "title": "Policy for Health Data and Information Sharing",
+                "distance": 0.7212
+              },
+              {
+                "excerpt_id": "dha_ai_healthcare_policy::0025",
+                "title": "Artificial Intelligence in the Healthcare Policy",
+                "distance": 0.7581
+              },
+              {
+                "excerpt_id": "dha_ai_healthcare_policy::0024",
+                "title": "Artificial Intelligence in the Healthcare Policy",
+                "distance": 0.7666
+              },
+              {
+                "excerpt_id": "dha_ai_healthcare_policy::0002",
+                "title": "Artificial Intelligence in the Healthcare Policy",
+                "distance": 0.7743
+              },
+              {
+                "excerpt_id": "dha_consent_access_control_std::0029",
+                "title": "Standards for Health Information Consent and Access Control",
+                "distance": 0.7942
+              },
+              {
+                "excerpt_id": "dha_health_info_sharing_policy::0043",
+                "title": "Policy for Health Data and Information Sharing",
+                "distance": 0.8123
+              },
+              {
+                "excerpt_id": "dha_ai_healthcare_policy::0023",
+                "title": "Artificial Intelligence in the Healthcare Policy",
+                "distance": 0.8204
+              },
+              {
+                "excerpt_id": "dha_consent_access_control_std::0040",
+                "title": "Standards for Health Information Consent and Access Control",
+                "distance": 0.821
+              }
+            ],
+            "assessment": {
+              "decision": "PERMIT_WITH_CONDITIONS",
+              "summary": "DHA rules treat research as a secondary use. Such use relies on anonymous data where practicable, and consent is normally required when identifiable data is needed. Anonymised information may be used for training only if proper controls ensure the anonymisation was done properly. Pseudonymised data still counts as personally identifiable. The handoff can proceed without new consent only if the record is truly anonymised, not merely pseudonymised or masked, and the anonymisation is properly controlled. Otherwise consent covering research or AI training is needed, and the recorded consent covers treatment only.",
+              "applies_because": "Both sender and receiver are in Dubai under DHA jurisdiction. The sender is a DHA-licensed hospital sharing patient health data for research and AI training, which DHA policy defines as a secondary use of health information.",
+              "conditions": [
+                "The shared clinical record and imaging must be genuinely anonymous, so that no individual can be identified directly or indirectly. Pseudonymised, masked or key-coded data does not qualify.",
+                "Proper controls must be in place to verify that the anonymisation has been performed properly, including checking quasi-identifiers and any identifying content embedded in the images.",
+                "The entity must consider whether identifiable patient information is actually needed for the research purpose.",
+                "If identifiable or re-identifiable data is required, consent from the patient for this purpose must be obtained before sharing.",
+                "The legal basis for sharing should be documented, for example in a data sharing agreement.",
+                "Access should be limited to the information needed for the partner's function."
+              ],
+              "unmet_conditions": [
+                "No evidence shows the data is anonymised rather than pseudonymised; it is only 'described as de-identified'.",
+                "No evidence shows that proper controls verified the anonymisation.",
+                "No consent covers research or AI training (the recorded purpose is treatment only). This consent is needed if the data turns out to be identifiable or pseudonymised.",
+                "No documented legal basis or data sharing agreement for this sharing is shown."
+              ],
+              "open_questions": [
+                "Does the DHA teaching/training provision (4.17) cover AI model training, or only health education?",
+                "What de-identification method was used? Is the data anonymised or pseudonymised, and can the hospital or partner re-identify it?",
+                "Do the imaging files contain embedded identifiers or quasi-identifiers?",
+                "Is a data sharing agreement with the AI research partner required in this case, and does one exist?",
+                "Is research ethics approval required? The excerpts do not address it."
+              ],
+              "citations": [
+                {
+                  "excerpt_id": "dha_health_info_sharing_policy::0012",
+                  "quote": "Secondary Use of Health Information: is using health information for purposes other than",
+                  "supports": "Research is defined as a secondary use, distinct from treatment.",
+                  "verified": true,
+                  "document": "Policy for Health Data and Information Sharing",
+                  "source_url": "https://nabidh.dha.gov.ae/cms/uploads/3652b370cb92403191417e920ab0f343.pdf"
+                },
+                {
+                  "excerpt_id": "dha_consent_access_control_std::0023",
+                  "quote": "If it is not practicable to work with anonymous data, then consent is normally required",
+                  "supports": "Secondary use beyond individual care should rely on anonymous data; otherwise consent is normally required.",
+                  "verified": true,
+                  "document": "Standards for Health Information Consent and Access Control",
+                  "source_url": "https://nabidh.dha.gov.ae/cms/uploads/2e5de3bcf44943dd9f1980f283101b4c.pdf"
+                },
+                {
+                  "excerpt_id": "dha_health_info_sharing_policy::0012",
+                  "quote": "Pseudonymised information is still considered",
+                  "supports": "Pseudonymised data remains personally identifiable, so a 'de-identified' label may not be enough.",
+                  "verified": true,
+                  "document": "Policy for Health Data and Information Sharing",
+                  "source_url": "https://nabidh.dha.gov.ae/cms/uploads/3652b370cb92403191417e920ab0f343.pdf"
+                },
+                {
+                  "excerpt_id": "dha_health_info_sharing_policy::0043",
+                  "quote": "4.17.1. Protected health information should not be used as a dataset for teaching purposes",
+                  "supports": "PHI should not be used for teaching or training datasets without patient consent.",
+                  "verified": true,
+                  "document": "Policy for Health Data and Information Sharing",
+                  "source_url": "https://nabidh.dha.gov.ae/cms/uploads/3652b370cb92403191417e920ab0f343.pdf"
+                },
+                {
+                  "excerpt_id": "dha_health_info_sharing_policy::0043",
+                  "quote": "Proper control should be in place to make",
+                  "supports": "Anonymised information may be used, but only with controls ensuring the anonymisation is done properly.",
+                  "verified": true,
+                  "document": "Policy for Health Data and Information Sharing",
+                  "source_url": "https://nabidh.dha.gov.ae/cms/uploads/3652b370cb92403191417e920ab0f343.pdf"
+                },
+                {
+                  "excerpt_id": "dha_health_info_sharing_policy::0043",
+                  "quote": "If information or media is used which can, directly or indirectly, identify an",
+                  "supports": "Consent is required if the information or media (such as imaging) can identify an individual.",
+                  "verified": true,
+                  "document": "Policy for Health Data and Information Sharing",
+                  "source_url": "https://nabidh.dha.gov.ae/cms/uploads/3652b370cb92403191417e920ab0f343.pdf"
+                },
+                {
+                  "excerpt_id": "dha_health_info_sharing_policy::0050",
+                  "quote": "Legal basis for sharing the data and information. If consent is required, then",
+                  "supports": "Sharing arrangements should document the legal basis and how any required consent is managed.",
+                  "verified": true,
+                  "document": "Policy for Health Data and Information Sharing",
+                  "source_url": "https://nabidh.dha.gov.ae/cms/uploads/3652b370cb92403191417e920ab0f343.pdf"
+                },
+                {
+                  "excerpt_id": "dha_consent_access_control_std::0029",
+                  "quote": "To the extent, technologically feasible users should be granted access only to health",
+                  "supports": "Access should be limited to the information needed for the user's function.",
+                  "verified": true,
+                  "document": "Standards for Health Information Consent and Access Control",
+                  "source_url": "https://nabidh.dha.gov.ae/cms/uploads/2e5de3bcf44943dd9f1980f283101b4c.pdf"
+                }
+              ],
+              "evidence_sufficient": true
+            },
+            "citation_check": {
+              "total": 8,
+              "verified": 8,
+              "unverified_ids": []
+            },
+            "llm": {
+              "model": "claude-opus-5-5",
+              "effort": "medium",
+              "stop_reason": "end_turn",
+              "input_tokens": 5831,
+              "output_tokens": 2259,
+              "latency_s": 20.78
+            }
+          },
+          {
+            "agent": "FEDERAL",
+            "authority": "UAE federal law and federal health policy (incl. MOHAP)",
+            "partition": "FEDERAL",
+            "query": "May a healthcare facility share patient health data, described as de-identified, with a research partner to train an AI model, when the patient consented only to treatment? research_ai_training clinical_record imaging || patient consent sharing disclosure of health information scientific and clinical research purposes secondary use || de-identified anonymised pseudonymised data secondary use",
+            "retrieved": [
+              {
+                "excerpt_id": "fed_law_2_2019::0011",
+                "title": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                "distance": 0.6176
+              },
+              {
+                "excerpt_id": "fed_ai_strategy_2031::0025",
+                "title": "UAE National Strategy for Artificial Intelligence 2031",
+                "distance": 0.9117
+              },
+              {
+                "excerpt_id": "fed_law_2_2019::0010",
+                "title": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                "distance": 0.9198
+              },
+              {
+                "excerpt_id": "fed_law_2_2019::0008",
+                "title": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                "distance": 0.9218
+              },
+              {
+                "excerpt_id": "fed_ai_strategy_2031::0048",
+                "title": "UAE National Strategy for Artificial Intelligence 2031",
+                "distance": 0.9394
+              },
+              {
+                "excerpt_id": "fed_law_2_2019::0007",
+                "title": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                "distance": 1.0297
+              },
+              {
+                "excerpt_id": "fed_law_2_2019::0009",
+                "title": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                "distance": 1.0786
+              },
+              {
+                "excerpt_id": "fed_law_2_2019::0006",
+                "title": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                "distance": 1.0923
+              },
+              {
+                "excerpt_id": "fed_ai_strategy_2031::0047",
+                "title": "UAE National Strategy for Artificial Intelligence 2031",
+                "distance": 1.0935
+              },
+              {
+                "excerpt_id": "fed_ai_strategy_2031::0049",
+                "title": "UAE National Strategy for Artificial Intelligence 2031",
+                "distance": 1.1183
+              }
+            ],
+            "assessment": {
+              "decision": "PERMIT_WITH_CONDITIONS",
+              "summary": "Under Federal Law No. 2 of 2019, Article 16, patient information may not be used for non-health purposes without the patient's written consent. One listed exception covers scientific and clinical research, but only if the patient's identity is not disclosed and the ethics and rules of scientific research are followed. Treatment-only consent therefore does not by itself block this handoff, provided the AI training qualifies as scientific or clinical research and both conditions are actually met. The evidence does not yet show this: de-identification is only claimed, and no ethics approval or research-rules compliance is documented. The data stays in the UAE, so the Article 13 bar on transfers outside the country is not triggered. This is an assessment for human review, not legal advice.",
+              "applies_because": "Federal Law No. 2 of 2019 applies to all uses of ICT in health fields in the UAE, including free zones. Here a DHA-licensed Dubai facility is electronically exchanging clinical and imaging data with a Dubai-based partner, which falls within that scope.",
+              "conditions": [
+                "The patient's identity must not be disclosed to the AI research partner. The data must be effectively de-identified, not just labelled as such.",
+                "The ethics and rules of scientific research must be followed for the AI training project.",
+                "The AI model training must qualify as 'scientific and clinical research' under Article 16(2).",
+                "The receiver must keep the information confidential and not use it for non-health purposes.",
+                "The data must not be stored, developed or transferred outside the UAE unless a decree is issued by the health authority in coordination with the Ministry."
+              ],
+              "unmet_conditions": [
+                "No evidence shows the data meets the requirement that the patient's identity is not disclosed. The sender only states that the data is de-identified, and no method or verification is provided.",
+                "No evidence shows that the ethics and rules of scientific research are being followed, such as research ethics committee approval or a research protocol.",
+                "No evidence shows that the AI training is a scientific or clinical research activity rather than commercial product development."
+              ],
+              "open_questions": [
+                "Does training an AI model for a commercial or research partner fall within 'scientific and clinical research' under Article 16(2)? The excerpts do not define the term.",
+                "What standard of de-identification satisfies 'the patient's identity is not disclosed'? Do imaging data and their metadata meet that standard?",
+                "Which specific 'ethics and rules of scientific research' apply, and who approves compliance? The federal excerpts do not specify. DHA-level rules may govern this.",
+                "Do the executive decree or health-authority rules under Articles 6 and 10 impose additional exchange conditions? These were not provided in the excerpts.",
+                "Are there contractual commitments from the partner on confidentiality, non-health use and keeping the data in the UAE?"
+              ],
+              "citations": [
+                {
+                  "excerpt_id": "fed_law_2_2019::0011",
+                  "quote": "anyone who exchanges and circulates patient information must ensure its confidentiality and not use it for non-health purposes, and without the written consent of the patient, except in the following cases:",
+                  "supports": "General rule: written consent is required, with listed exceptions, plus a duty of confidentiality and health-purpose use.",
+                  "verified": true,
+                  "document": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                  "source_url": "https://www.dha.gov.ae/uploads/082022/Federal%20Law%20No2022824434.pdf"
+                },
+                {
+                  "excerpt_id": "fed_law_2_2019::0011",
+                  "quote": "2. The purposes of scientific and clinical research, provided that the patient's identity is not disclosed and that the ethics and rules of scientific research are followed.",
+                  "supports": "Research exception and its conditions: no identity disclosure and adherence to research ethics.",
+                  "verified": true,
+                  "document": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                  "source_url": "https://www.dha.gov.ae/uploads/082022/Federal%20Law%20No2022824434.pdf"
+                },
+                {
+                  "excerpt_id": "fed_law_2_2019::0006",
+                  "quote": "This law applies to all methods and uses of ICTs in the health fields in the country, including free zones.",
+                  "supports": "Federal law governs this electronic health data exchange in Dubai.",
+                  "verified": true,
+                  "document": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                  "source_url": "https://www.dha.gov.ae/uploads/082022/Federal%20Law%20No2022824434.pdf"
+                },
+                {
+                  "excerpt_id": "fed_law_2_2019::0010",
+                  "quote": "It is not permitted to store, develop, or transfer data and health information outside the country that is related to health services provided within the country,",
+                  "supports": "Data localisation condition, which is met here because the partner is located in the UAE.",
+                  "verified": true,
+                  "document": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                  "source_url": "https://www.dha.gov.ae/uploads/082022/Federal%20Law%20No2022824434.pdf"
+                },
+                {
+                  "excerpt_id": "fed_law_2_2019::0007",
+                  "quote": "To maintain the confidentiality of health data and information by not allowing them to be traded or exchanged in other than authorized cases.",
+                  "supports": "The exchange is lawful only in authorised cases, and confidentiality must be maintained.",
+                  "verified": true,
+                  "document": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                  "source_url": "https://www.dha.gov.ae/uploads/082022/Federal%20Law%20No2022824434.pdf"
+                }
+              ],
+              "evidence_sufficient": true
+            },
+            "citation_check": {
+              "total": 5,
+              "verified": 5,
+              "unverified_ids": []
+            },
+            "llm": {
+              "model": "claude-opus-5-5",
+              "effort": "medium",
+              "stop_reason": "end_turn",
+              "input_tokens": 5771,
+              "output_tokens": 1886,
+              "latency_s": 18.15
+            }
+          }
+        ],
+        "outcome": "PAUSE",
+        "reasons": [
+          "Consent tracker: PURPOSE_NOT_COVERED",
+          "DHA: 4 condition(s) still to be met",
+          "FEDERAL: 3 condition(s) still to be met"
+        ],
+        "data_released": false
+      },
+      {
+        "step": {
+          "id": "2",
+          "title": "Research partner processes the data on a cloud server outside the UAE",
+          "from_entity": "AI research partner (Dubai)",
+          "from_jurisdiction": "DHA",
+          "to_entity": "Cloud processing provider (outside the UAE)",
+          "to_jurisdiction": "OUTSIDE_UAE",
+          "to_location": "OUTSIDE_UAE",
+          "purpose": "research_ai_training",
+          "data_categories": [
+            "clinical_record",
+            "imaging"
+          ],
+          "deidentified": true,
+          "question": "May health data be stored or processed outside the UAE for AI model training, and under what conditions?"
+        },
+        "consent_findings": [
+          {
+            "code": "PURPOSE_NOT_COVERED",
+            "severity": "HIGH",
+            "detail": "Proposed purpose 'research_ai_training' is not in any recorded consent (recorded purposes: treatment)."
+          },
+          {
+            "code": "CROSS_BORDER_TRANSFER",
+            "severity": "HIGH",
+            "detail": "Data would be stored or processed outside the UAE."
+          },
+          {
+            "code": "DEIDENTIFIED_CLAIM",
+            "severity": "INFO",
+            "detail": "Sender states the data is de-identified; each regulator's definition must be checked."
+          }
+        ],
+        "assessments": [
+          {
+            "agent": "DHA",
+            "authority": "Dubai Health Authority (DHA)",
+            "partition": "DHA",
+            "query": "May health data be stored or processed outside the UAE for AI model training, and under what conditions? research_ai_training clinical_record imaging || patient consent sharing disclosure of health information scientific and clinical research purposes secondary use || de-identified anonymised pseudonymised data secondary use || store develop or transfer health data and information outside the country",
+            "retrieved": [
+              {
+                "excerpt_id": "dha_ai_healthcare_policy::0000",
+                "title": "Artificial Intelligence in the Healthcare Policy",
+                "distance": 0.6501
+              },
+              {
+                "excerpt_id": "dha_consent_access_control_std::0023",
+                "title": "Standards for Health Information Consent and Access Control",
+                "distance": 0.6553
+              },
+              {
+                "excerpt_id": "dha_health_info_sharing_policy::0012",
+                "title": "Policy for Health Data and Information Sharing",
+                "distance": 0.6947
+              },
+              {
+                "excerpt_id": "dha_health_info_sharing_policy::0016",
+                "title": "Policy for Health Data and Information Sharing",
+                "distance": 0.7094
+              },
+              {
+                "excerpt_id": "dha_health_data_protection_policy::0013",
+                "title": "Policy for Data and Health Information Protection and Confidentiality",
+                "distance": 0.7138
+              },
+              {
+                "excerpt_id": "dha_health_info_sharing_policy::0050",
+                "title": "Policy for Health Data and Information Sharing",
+                "distance": 0.7212
+              },
+              {
+                "excerpt_id": "dha_ai_healthcare_policy::0022",
+                "title": "Artificial Intelligence in the Healthcare Policy",
+                "distance": 0.7456
+              },
+              {
+                "excerpt_id": "dha_ai_healthcare_policy::0020",
+                "title": "Artificial Intelligence in the Healthcare Policy",
+                "distance": 0.7495
+              },
+              {
+                "excerpt_id": "dha_ai_healthcare_policy::0017",
+                "title": "Artificial Intelligence in the Healthcare Policy",
+                "distance": 0.7531
+              },
+              {
+                "excerpt_id": "dha_consent_access_control_std::0029",
+                "title": "Standards for Health Information Consent and Access Control",
+                "distance": 0.7942
+              }
+            ],
+            "assessment": {
+              "decision": "SILENT",
+              "summary": "DHA rules govern this data and this AI developer, but the excerpts do not set out when health data may be stored or processed outside the UAE. They only point to Federal Ministerial Decision No 51 of 2021 on 'Cases Allowing the Storage and Transfer' of medical data out of the UAE, and its content is not in the knowledge base. So the excerpts cannot answer the core cross-border question. Related DHA requirements apply to this step regardless: health information includes imaging and non-identifiable data; secondary use such as research normally needs consent unless anonymous data is workable; pseudonymised data is still identifiable and must move only by secure means; and a data sharing agreement must state the legal basis. The recorded consent covers treatment only. A human reviewer should check Ministerial Decision 51/2021 directly. This is an assessment for human review, not legal advice.",
+              "applies_because": "The DHA AI in Healthcare Policy applies to locally based AI developers that use Dubai patient clinical data to develop AI solutions. The sender is a Dubai AI research partner training models. DHA's definition of health information covers imaging and non-identifiable data, so the de-identification claim does not take the data outside DHA's scope.",
+              "conditions": [
+                "If the data is only pseudonymised rather than anonymous, treat it as personally identifiable and transfer it only by secure means.",
+                "If identifiable or pseudonymised data is needed for research or AI training, obtain consent for that purpose. The recorded consent covers treatment only.",
+                "Document the legal basis for sharing, and how any consent is recorded and managed, in a data sharing agreement.",
+                "Comply with the cross-border rules in Federal Ministerial Decision No 51 of 2021, which DHA policy references. Its specific conditions are not in the excerpts."
+              ],
+              "unmet_conditions": [
+                "No consent for research or AI training: the recorded consent covers treatment only.",
+                "No evidence that the data is truly anonymous rather than pseudonymised.",
+                "No evidence of a legal basis for the offshore transfer or that a permitted case under Ministerial Decision 51/2021 applies.",
+                "No evidence of secure transfer means or a data sharing agreement with the cloud provider."
+              ],
+              "open_questions": [
+                "What conditions or permitted cases does Federal Ministerial Decision No 51 of 2021 set for storing or processing medical data outside the UAE? Its text is not in the excerpts.",
+                "Does DHA's standard for de-identification or anonymisation, if met, remove the need for consent and change the cross-border restrictions?",
+                "Was the de-identification method anonymisation or pseudonymisation, and how is the risk from quasi-identifiers in the imaging and clinical records handled?",
+                "Do any DHA AI policy duties apply specifically to the offshore cloud processor?"
+              ],
+              "citations": [
+                {
+                  "excerpt_id": "dha_ai_healthcare_policy::0000",
+                  "quote": "National and locally based international AI developers that utilize Dubai based population or patient clinical and nonclinical data to develop AI solutions.",
+                  "supports": "DHA AI policy applies to the Dubai AI research partner.",
+                  "verified": true,
+                  "document": "Artificial Intelligence in the Healthcare Policy",
+                  "source_url": "https://nabidh.dha.gov.ae/cms/uploads/7c2063bf99f84bdcb88a4dc0933718b2.pdf"
+                },
+                {
+                  "excerpt_id": "dha_health_data_protection_policy::0013",
+                  "quote": "Federal Ministerial Decision No 51 of 2021 Cases Allowing the Storage and",
+                  "supports": "DHA refers cross-border storage and transfer rules to a federal decision whose content is not provided.",
+                  "verified": true,
+                  "document": "Policy for Data and Health Information Protection and Confidentiality",
+                  "source_url": "https://www.dha.gov.ae/uploads/082022/Health%20Data%20Protection%20and%20Confidentiality%20Policy_EN2022810559.pdf"
+                },
+                {
+                  "excerpt_id": "dha_health_data_protection_policy::0013",
+                  "quote": "Nevertheless, the regulation that is more specialized/detailed in health will",
+                  "supports": "The more specialised health regulation prevails.",
+                  "verified": true,
+                  "document": "Policy for Data and Health Information Protection and Confidentiality",
+                  "source_url": "https://www.dha.gov.ae/uploads/082022/Health%20Data%20Protection%20and%20Confidentiality%20Policy_EN2022810559.pdf"
+                },
+                {
+                  "excerpt_id": "dha_health_info_sharing_policy::0016",
+                  "quote": "3.2.5. Identifiable and non-identifiable data.",
+                  "supports": "De-identified data is still health information under DHA policy.",
+                  "verified": true,
+                  "document": "Policy for Health Data and Information Sharing",
+                  "source_url": "https://nabidh.dha.gov.ae/cms/uploads/3652b370cb92403191417e920ab0f343.pdf"
+                },
+                {
+                  "excerpt_id": "dha_health_info_sharing_policy::0016",
+                  "quote": "3.2.4. X-ray and imaging reports, output and images.",
+                  "supports": "Imaging data is covered.",
+                  "verified": true,
+                  "document": "Policy for Health Data and Information Sharing",
+                  "source_url": "https://nabidh.dha.gov.ae/cms/uploads/3652b370cb92403191417e920ab0f343.pdf"
+                },
+                {
+                  "excerpt_id": "dha_consent_access_control_std::0023",
+                  "quote": "If it is not practicable to work with anonymous data, then consent is normally required",
+                  "supports": "Secondary use such as research normally needs consent unless anonymous data is used.",
+                  "verified": true,
+                  "document": "Standards for Health Information Consent and Access Control",
+                  "source_url": "https://nabidh.dha.gov.ae/cms/uploads/2e5de3bcf44943dd9f1980f283101b4c.pdf"
+                },
+                {
+                  "excerpt_id": "dha_health_info_sharing_policy::0012",
+                  "quote": "Pseudonymised information is still considered",
+                  "supports": "Pseudonymised data remains personally identifiable.",
+                  "verified": true,
+                  "document": "Policy for Health Data and Information Sharing",
+                  "source_url": "https://nabidh.dha.gov.ae/cms/uploads/3652b370cb92403191417e920ab0f343.pdf"
+                },
+                {
+                  "excerpt_id": "dha_health_info_sharing_policy::0012",
+                  "quote": "only be transferred using secure means.",
+                  "supports": "Secure transfer is required for pseudonymised data.",
+                  "verified": true,
+                  "document": "Policy for Health Data and Information Sharing",
+                  "source_url": "https://nabidh.dha.gov.ae/cms/uploads/3652b370cb92403191417e920ab0f343.pdf"
+                },
+                {
+                  "excerpt_id": "dha_health_info_sharing_policy::0050",
+                  "quote": "Legal basis for sharing the data and information.",
+                  "supports": "A data sharing agreement must state the legal basis for sharing.",
+                  "verified": true,
+                  "document": "Policy for Health Data and Information Sharing",
+                  "source_url": "https://nabidh.dha.gov.ae/cms/uploads/3652b370cb92403191417e920ab0f343.pdf"
+                }
+              ],
+              "evidence_sufficient": false
+            },
+            "citation_check": {
+              "total": 9,
+              "verified": 9,
+              "unverified_ids": []
+            },
+            "llm": {
+              "model": "claude-opus-5-5",
+              "effort": "medium",
+              "stop_reason": "end_turn",
+              "input_tokens": 6697,
+              "output_tokens": 2523,
+              "latency_s": 21.85
+            }
+          },
+          {
+            "agent": "FEDERAL",
+            "authority": "UAE federal law and federal health policy (incl. MOHAP)",
+            "partition": "FEDERAL",
+            "query": "May health data be stored or processed outside the UAE for AI model training, and under what conditions? research_ai_training clinical_record imaging || patient consent sharing disclosure of health information scientific and clinical research purposes secondary use || de-identified anonymised pseudonymised data secondary use || store develop or transfer health data and information outside the country",
+            "retrieved": [
+              {
+                "excerpt_id": "fed_law_2_2019::0011",
+                "title": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                "distance": 0.6176
+              },
+              {
+                "excerpt_id": "fed_law_2_2019::0010",
+                "title": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                "distance": 0.6487
+              },
+              {
+                "excerpt_id": "fed_ai_strategy_2031::0025",
+                "title": "UAE National Strategy for Artificial Intelligence 2031",
+                "distance": 0.6867
+              },
+              {
+                "excerpt_id": "fed_ai_strategy_2031::0047",
+                "title": "UAE National Strategy for Artificial Intelligence 2031",
+                "distance": 0.6913
+              },
+              {
+                "excerpt_id": "fed_law_2_2019::0006",
+                "title": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                "distance": 0.7838
+              },
+              {
+                "excerpt_id": "fed_ai_strategy_2031::0026",
+                "title": "UAE National Strategy for Artificial Intelligence 2031",
+                "distance": 0.817
+              },
+              {
+                "excerpt_id": "fed_ai_strategy_2031::0034",
+                "title": "UAE National Strategy for Artificial Intelligence 2031",
+                "distance": 0.8438
+              },
+              {
+                "excerpt_id": "fed_ai_strategy_2031::0049",
+                "title": "UAE National Strategy for Artificial Intelligence 2031",
+                "distance": 0.867
+              },
+              {
+                "excerpt_id": "fed_ai_strategy_2031::0046",
+                "title": "UAE National Strategy for Artificial Intelligence 2031",
+                "distance": 0.8762
+              },
+              {
+                "excerpt_id": "fed_law_2_2019::0009",
+                "title": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                "distance": 0.8868
+              }
+            ],
+            "assessment": {
+              "decision": "BLOCK",
+              "summary": "Federal Law No. 2 of 2019 (Article 13) forbids storing, developing or transferring data and health information about health services provided in the UAE to outside the country. The only exception is a decree issued by the health authority in coordination with the Ministry. No such decree is shown, so offshore cloud processing is blocked as described. Article 16 separately allows research use without written consent if the patient's identity is not disclosed and research ethics are followed. That may cover the consent gap for AI training, but it does not override the Article 13 localisation rule. The de-identification claim does not clearly take the data outside Article 13, whose broad 'Data' definition includes images. This is an assessment for human review, not legal advice.",
+              "applies_because": "Federal Law No. 2 of 2019 covers all uses of ICT in the health fields in the UAE, including free zones, so it reaches a Dubai-based research partner. The step involves storing and processing clinical records and imaging, linked to health services delivered in the UAE, on a server outside the UAE.",
+              "conditions": [
+                "If a qualifying decree is obtained, the receiver must keep the data confidential and use it only for health purposes (Art. 16).",
+                "Research use without written consent relies on the patient's identity not being disclosed and on the ethics and rules of scientific research being followed (Art. 16(2))."
+              ],
+              "unmet_conditions": [
+                "No evidence of a decree from the health authority, issued in coordination with the Ministry, permitting this data to be stored or processed outside the UAE (Art. 13).",
+                "No evidence that the ethics and rules of scientific research are being followed, such as research ethics approval, for the research exception in Art. 16(2).",
+                "No evidence that the de-identification is enough to ensure the patient's identity is not disclosed."
+              ],
+              "open_questions": [
+                "Does Article 13 apply to de-identified or anonymised data? The excerpts give no exemption, and 'Data' is defined broadly.",
+                "Has the DHA, as the relevant health authority, issued any decree in coordination with MOHAP permitting offshore storage or processing for research or AI training?",
+                "What storage conditions does the Ministerial Decree under Article 12 set? It is not included in the excerpts.",
+                "Does AI model training count as 'scientific and clinical research' under Art. 16(2)?"
+              ],
+              "citations": [
+                {
+                  "excerpt_id": "fed_law_2_2019::0010",
+                  "quote": "It is not permitted to store, develop, or transfer\ndata and health information outside the\ncountry that is related to health services\nprovided within the country, except in cases\nwhere a decree is issued by the health\nauthority in coordination with the ministry.",
+                  "supports": "Default ban on storing or transferring health data outside the UAE, with a decree-based exception.",
+                  "verified": true,
+                  "document": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                  "source_url": "https://www.dha.gov.ae/uploads/082022/Federal%20Law%20No2022824434.pdf"
+                },
+                {
+                  "excerpt_id": "fed_law_2_2019::0006",
+                  "quote": "This law applies to all methods and uses of\nICTs in the health fields in the country,\nincluding free zones.",
+                  "supports": "The law applies to the Dubai-based research partner.",
+                  "verified": true,
+                  "document": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                  "source_url": "https://www.dha.gov.ae/uploads/082022/Federal%20Law%20No2022824434.pdf"
+                },
+                {
+                  "excerpt_id": "fed_law_2_2019::0006",
+                  "quote": "Data: All that can be stored, processed,\ngenerated and transferred by ICT such as\nnumbers, letters, symbols, images and the like.",
+                  "supports": "Broad definition of data, including images, with no stated exclusion for de-identified data.",
+                  "verified": true,
+                  "document": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                  "source_url": "https://www.dha.gov.ae/uploads/082022/Federal%20Law%20No2022824434.pdf"
+                },
+                {
+                  "excerpt_id": "fed_law_2_2019::0011",
+                  "quote": "The purposes of scientific and clinical research,\nprovided that the patient's identity is not disclosed\nand that the ethics and rules of scientific research are\nfollowed.",
+                  "supports": "Research exception to the written-consent requirement, which addresses the PURPOSE_NOT_COVERED finding.",
+                  "verified": true,
+                  "document": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                  "source_url": "https://www.dha.gov.ae/uploads/082022/Federal%20Law%20No2022824434.pdf"
+                },
+                {
+                  "excerpt_id": "fed_law_2_2019::0011",
+                  "quote": "anyone who exchanges and circulates patient\ninformation must ensure its confidentiality and not\nuse it for non-health purposes",
+                  "supports": "Ongoing duties of confidentiality and health-purpose-only use.",
+                  "verified": true,
+                  "document": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                  "source_url": "https://www.dha.gov.ae/uploads/082022/Federal%20Law%20No2022824434.pdf"
+                },
+                {
+                  "excerpt_id": "fed_law_2_2019::0009",
+                  "quote": "A Ministerial Decree in coordination with the\nhealth authorities shall determine the\nconditions and controls for storage of health\ndata and information within the country.",
+                  "supports": "Storage conditions are set by a Ministerial Decree that is not in the excerpts.",
+                  "verified": true,
+                  "document": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare",
+                  "source_url": "https://www.dha.gov.ae/uploads/082022/Federal%20Law%20No2022824434.pdf"
+                }
+              ],
+              "evidence_sufficient": true
+            },
+            "citation_check": {
+              "total": 6,
+              "verified": 6,
+              "unverified_ids": []
+            },
+            "llm": {
+              "model": "claude-opus-5-5",
+              "effort": "medium",
+              "stop_reason": "end_turn",
+              "input_tokens": 6163,
+              "output_tokens": 1921,
+              "latency_s": 17.69
+            }
+          }
+        ],
+        "outcome": "BLOCK",
+        "reasons": [
+          "FEDERAL blocks this step"
+        ],
+        "data_released": false
+      }
+    ],
+    "gap_register": [
+      {
+        "type": "CONSENT_CHAIN_GAP",
+        "step": "1",
+        "detail": "Proposed purpose 'research_ai_training' is not in any recorded consent (recorded purposes: treatment)."
+      },
+      {
+        "type": "POLICY_SILENCE",
+        "regulator": "DHA",
+        "step": "2",
+        "question": "May health data be stored or processed outside the UAE for AI model training, and under what conditions?"
+      },
+      {
+        "type": "COORDINATION_GAP",
+        "step": "2",
+        "detail": "Regulators reached different decisions on the same handoff: DHA=SILENT, FEDERAL=BLOCK"
+      },
+      {
+        "type": "CONSENT_CHAIN_GAP",
+        "step": "2",
+        "detail": "Proposed purpose 'research_ai_training' is not in any recorded consent (recorded purposes: treatment)."
+      }
+    ],
+    "patient_plan": {
+      "agent": "NAVIGATOR",
+      "plan": {
+        "language": "en",
+        "headline": "Your records have not been shared with anyone else. Both steps are on hold.",
+        "status_in_plain_words": "Your consent covers treatment only. The hospital wanted to give a 'de-identified' copy to an AI research partner. This is paused: no proof yet shows the data is truly anonymous, no research ethics approval is shown, and there is no data sharing agreement. The partner also planned to process the data on a cloud server outside the UAE. Federal law blocks this unless a health authority decree allows it, and none is shown. Dubai (DHA) rules do not yet cover this offshore step in the material reviewed. Nothing has been released.",
+        "what_you_need_to_do": [
+          "Nothing is required. Your data stays put unless the missing conditions are met.",
+          "If anyone asks you to agree to research or AI training, you may say yes or no. Your current consent does not cover it.",
+          "Ask the hospital how it would prove your data is truly anonymous and whether ethics approval exists."
+        ],
+        "what_happens_next": "Sharing can go ahead only if the hospital provides the missing proof. Offshore processing stays blocked unless a decree is issued. A human reviewer will check these results.",
+        "disclaimer": "This is a research prototype, not legal or medical advice."
+      },
+      "llm": {
+        "model": "claude-opus-5-5",
+        "effort": "medium",
+        "stop_reason": "end_turn",
+        "input_tokens": 3328,
+        "output_tokens": 530,
+        "latency_s": 8.61
+      }
+    }
+  }
+}
