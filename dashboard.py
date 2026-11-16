@@ -10,6 +10,7 @@ Tabs:
   4. Architecture - how the building blocks connect, mapped to ITU-T Y.3172
 """
 import json
+from html import escape
 from pathlib import Path
 
 import streamlit as st
@@ -131,7 +132,12 @@ def show_governed(trace):
             + f"\n\n{plan['what_happens_next']}\n\n_{plan['disclaimer']}_")
     with st.container(border=True):
         if rtl:
-            st.markdown(f'<div dir="rtl" style="text-align:right">{body}</div>', unsafe_allow_html=True)
+            # Markdown is not converted inside raw HTML, so build the right-to-left message as escaped HTML.
+            steps = "".join(f"<li>{escape(x)}</li>" for x in plan["what_you_need_to_do"])
+            st.markdown(f'<div dir="rtl" style="text-align:right"><p><b>{escape(plan["headline"])}</b></p>'
+                        f'<p>{escape(plan["status_in_plain_words"])}</p><ol>{steps}</ol>'
+                        f'<p>{escape(plan["what_happens_next"])}</p><p><i>{escape(plan["disclaimer"])}</i></p></div>',
+                        unsafe_allow_html=True)
         else:
             st.markdown(body)
 

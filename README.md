@@ -195,5 +195,5 @@ itu-venv/bin/python kb_itu/test_itu_kb.py ITUAIReadiness/simulation kb_itu/chrom
 - Research prototype on simulated scenarios; regulator agents' interpretations have **not** been reviewed by a lawyer.
 - Some documents may have newer versions than the ones we obtained (see notes above).
 - Retrieval uses a small general-purpose embedding model; a relevant clause can be missed, which may show up as SILENT.
-- The prototype sends only simulated scenarios and public regulation text to the model API. A real deployment must run inside the UAE (a local model, or UAE-hosted cloud infrastructure such as the AWS UAE region `me-central-1`).
+- The prototype sends only simulated scenarios and public regulation text to the model API. A real deployment must run inside the UAE (a local model, or UAE-hosted cloud infrastructure such as the AWS UAE region `me-central-1`). On Amazon Bedrock in me-central-1, Claude models are available only through Global cross-Region inference (AWS documentation, checked 16 Nov 2026), so keeping processing inside the UAE would need a self-hosted model.
 - Requires an Anthropic API key for governed mode. An offline local-model option is planned, not yet implemented.
