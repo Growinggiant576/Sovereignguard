@@ -10,6 +10,16 @@ SovereignGuard is a multi-agent research prototype that checks each proposed han
 
 > Research prototype. Simulated scenarios only - no real patient data. Not legal advice. The knowledge base contains public documents only.
 
+## For judges: where to look (no installation needed)
+
+1. **What it does:** before a patient's record leaves a hospital, one agent per UAE regulator (DHA, DoH, federal law) checks the handoff against that regulator's own documents. Fixed rules then release it, hold it with one checklist of what is missing (the Care Passport), or block it.
+2. **Demo in the browser:** [growinggiant576.github.io/Sovereignguard/demo](https://growinggiant576.github.io/Sovereignguard/demo/) shows the real dashboard (screenshots), the result of every scenario and the 12 documents, next to a 25-slide walkthrough of how it works. Scenario results come from the saved runs in [`runs/`](runs/); the page makes no model calls.
+3. **Results of every scenario:** [`runs/`](runs/) holds readable reports (`*.md`) and the same traces in machine-readable form (`*.json`: decisions, quoted clauses, verification flags, retrieved passages, model ID, token counts, knowledge-base fingerprint), the kind of output ITU-T ML5G-DEL3 REQ-ML-SANDBOX-016 asks for from simulations and evaluations. Start with [`s4_care_transfer_completed__governed.md`](runs/s4_care_transfer_completed__governed.md) (released) and [`s2_research_reuse__governed.md`](runs/s2_research_reuse__governed.md) (blocked under Federal Law No. 2 of 2019, Article 13).
+4. **Source attribution:** across all governed runs, 122 of 122 quoted clauses were matched to the source text by the citation verifier.
+5. **Standards mapping:** ITU-T Y.3172 and AI Readiness 2.0 are mapped in Section 5 of the [technical report](docs/SovereignGuard_Technical_Report.docx) (text version: [`docs/report_draft.md`](docs/report_draft.md)).
+6. **Knowledge base:** 12 public UAE documents, each with source URL, issuer and access date in [`kb/manifest.json`](kb/manifest.json) and a SHA-256 fingerprint in [`kb/sha256.json`](kb/sha256.json). `python3 kb/verify_manifest.py` checks every text file and confirms the knowledge-base fingerprint recorded in every saved run. The same documents are also built with the ITU reference code in [`kb_itu/`](kb_itu/) ([details](#knowledge-base-built-with-the-itu-reference-code)).
+7. **Run it without an API key:** the dashboard's Scenarios tab and the no-checks mode ([steps](#dashboard-local-demo)).
+
 ## Architecture
 
 ```mermaid
@@ -41,7 +51,7 @@ SRC, C, PP, M, P, D and SINK are the ITU-T Y.3172 machine-learning pipeline node
 
 ## Dashboard (local demo)
 
-The dashboard runs on your own computer; there is no hosted website. The **Scenarios** tab shows every saved run and needs **no API key**.
+The dashboard runs on your own computer only. (The [demo page](https://growinggiant576.github.io/Sovereignguard/demo/) shows screenshots and saved results; it is not the dashboard.) The **Scenarios** tab shows every saved run and needs **no API key**.
 
 **Requires Python 3.10 or newer.** Check with `python3 --version`. The Python built into macOS may be 3.9; if so, install Python 3.12 from python.org first.
 
@@ -132,7 +142,7 @@ Copy any file in `scenarios/`, change the consent records and handoff steps, and
 
 | File | What happens | Why it matters |
 |---|---|---|
-| `s1_care_transfer.json` | Patient moves from an Abu Dhabi (DoH) hospital to a Dubai (DHA) hospital; record released for continuing treatment | Consent recorded under one emirate's framework, used under another's |
+| `s1_care_transfer.json` | Patient moves from an Abu Dhabi (DoH) hospital to a Dubai (DHA) hospital and asks for the record to be sent for continuing treatment; SovereignGuard holds it with a 6-item Care Passport | Consent recorded under one emirate's framework, used under another's |
 | `s2_research_reuse.json` | The Dubai hospital shares a "de-identified" copy with an AI research partner, which then processes it on a server outside the UAE | Purpose drift (treatment -> AI training) and cross-border transfer |
 | `s3_care_transfer_arabic.json` | Same as s1, patient request and action plan in Arabic | Multi-language citizen interaction (Arabic not yet reviewed by a native speaker) |
 | `s5_ai_training_completed.json` | AI-training reuse after the patient opts in, with ethics approval, data-sharing agreement and UAE-only processing | Federal conditions met; DHA lists 4 exact remaining items before release |
@@ -158,6 +168,27 @@ Public UAE documents, partitioned by regulator. Text extracted from the publishe
 | DOH | [Privacy Notice](https://www.malaffi.ae/privacy-notice/) | Abu Dhabi Health Data Services - Sole Proprietorship LLC (ADHDS) - Malaffi | HTML page; 'VERSION 2.0 PUBLISHED ON 29 September 2022', 'Last updated on 08 May 2025'. Body text only (site navigation removed). Operator's privacy notice, not a DOH regulation. |
 
 **Not obtained (limitation):** the English text of Federal Decree-Law No. 45 of 2021 (personal data protection), Cabinet Resolution No. 32 of 2020 (scanned images only), and policies published on mohap.gov.ae and doh.gov.ae (not downloadable from our network). The federal partition is therefore thin, and agents are instructed to declare silence rather than fill gaps.
+
+## Knowledge base built with the ITU reference code
+
+The same 12 documents are also ingested with the reference code that the hackathon page lists for knowledge-base creation, [ITUAIReadiness](https://github.com/CrashingGuru/ITUAIReadiness) (commit `84010da`). The build uses its own parsing, chunking, `nomic-embed-text` embeddings (through Ollama) and `KnowledgeBase` class, unmodified. Our script, [`kb_itu/build_itu_kb.py`](kb_itu/build_itu_kb.py), only adds metadata: country, regulator partition, document ID, title, issuer and source URL.
+
+- **Result:** 572 passages in the `kb_main` collection, plus 19 ITU AI Readiness framework definitions that the reference code loads into `kb_framework`.
+- **Ready-built store:** [`kb_itu/sovereignguard_kb_itu_format.zip`](kb_itu/sovereignguard_kb_itu_format.zip) (5.8 MB, built with ChromaDB 1.5.9). Unzip it and point the ITU code at the `chromadb` folder (environment variable `AIREADY_CHROMADB_DIR`).
+- **Retrieval check:** [`kb_itu/test_itu_kb.py`](kb_itu/test_itu_kb.py) asks for 8 known clauses (for example Federal Law No. 2 of 2019 Articles 13 and 16, DHA policy 4.6.4, DoH standard 4.1.4). 6 of 8 are found in the top 5 results, the same score as our own knowledge base on the same 8 questions. Both miss the same two (DoH HIE policy 4.2.1.2 and the research clause of the Malaffi privacy notice); those passages are in the knowledge base but rank lower.
+
+Rebuild and test (macOS/Linux; needs [Ollama](https://ollama.com); the embedding model download is 274 MB):
+
+```bash
+git clone https://github.com/CrashingGuru/ITUAIReadiness.git
+git -C ITUAIReadiness checkout 84010da
+python3 -m venv itu-venv
+itu-venv/bin/pip install "ollama>=0.4.0" "chromadb>=0.5.0" "pydantic>=2.0.0" "pydantic-settings>=2.0.0"
+OLLAMA_HOST=127.0.0.1:11434 ollama serve &     # local only
+ollama pull nomic-embed-text
+itu-venv/bin/python kb_itu/build_itu_kb.py ITUAIReadiness/simulation . kb_itu/chromadb
+itu-venv/bin/python kb_itu/test_itu_kb.py ITUAIReadiness/simulation kb_itu/chromadb
+```
 
 ## Limitations
 

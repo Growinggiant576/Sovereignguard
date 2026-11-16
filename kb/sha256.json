@@ -1,0 +1,62 @@
+[
+  {
+    "doc_id": "fed_law_2_2019",
+    "text_file": "kb/text/fed_law_2_2019.txt",
+    "sha256": "e6d8b32b71711d15fafcb7b75385ce4fba4be8297044d49a66085a0a14f29c0e"
+  },
+  {
+    "doc_id": "fed_ai_strategy_2031",
+    "text_file": "kb/text/fed_ai_strategy_2031.txt",
+    "sha256": "4f4ed71f6d4b3b9db3b7b1c5a8cfff3f54ae53da832df72762e59851f06d8bab"
+  },
+  {
+    "doc_id": "dha_nabidh_policies_standards",
+    "text_file": "kb/text/dha_nabidh_policies_standards.txt",
+    "sha256": "df8d67ed81d5331fa09d1bd27bf3c3199f1c2dd449586800b216553517ab5750"
+  },
+  {
+    "doc_id": "dha_health_info_sharing_policy",
+    "text_file": "kb/text/dha_health_info_sharing_policy.txt",
+    "sha256": "ca16f559ef0cf486121ae169f10d36f87bcdac52ca79f25438c8bc3502c0d612"
+  },
+  {
+    "doc_id": "dha_consent_access_control_std",
+    "text_file": "kb/text/dha_consent_access_control_std.txt",
+    "sha256": "8e391592a555a4a5114bc4e96706b38a812bf3df0dd0751a84eb9d1663fdd2e8"
+  },
+  {
+    "doc_id": "dha_ai_healthcare_policy",
+    "text_file": "kb/text/dha_ai_healthcare_policy.txt",
+    "sha256": "3b3f73ce283761deb3df911ac6a7145ad8a38fcc6f815021408087d317de7270"
+  },
+  {
+    "doc_id": "dha_health_data_protection_policy",
+    "text_file": "kb/text/dha_health_data_protection_policy.txt",
+    "sha256": "7af3d4c3bcd9c1c74f76a2e8679107dcf74c59b5c57de17f7d9bc3c5f0977daa"
+  },
+  {
+    "doc_id": "dha_personal_health_data_prefs",
+    "text_file": "kb/text/dha_personal_health_data_prefs.txt",
+    "sha256": "e2c6fecb92ed562f80da7c4513a195d3b6dc0fd1f1018869d45d0a2093900569"
+  },
+  {
+    "doc_id": "doh_adhie_policy",
+    "text_file": "kb/text/doh_adhie_policy.txt",
+    "sha256": "856dbba9c25f18018de95524aa28e490b45af2cd3c2b456e024e132a44d02079"
+  },
+  {
+    "doc_id": "doh_patient_data_privacy_std",
+    "text_file": "kb/text/doh_patient_data_privacy_std.txt",
+    "sha256": "4438abe214aa2972056650917e367f90bda4acd1f84df96e72fcc7912933a1c5"
+  },
+  {
+    "doc_id": "doh_adhics_standard",
+    "text_file": "kb/text/doh_adhics_standard.txt",
+    "sha256": "74194d84a25f73d4c5aa2535c917f24fe91a3f8c77c39b981703e9813f2d8cd2"
+  },
+  {
+    "doc_id": "doh_malaffi_privacy_notice",
+    "text_file": "kb/text/doh_malaffi_privacy_notice.txt",
+    "sha256": "94a6d375bbe4147d59e75ec91e912010a4322f2ed72f4310e18f232c3065ba08"
+  }
+]

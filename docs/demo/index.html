@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SovereignGuard - passport control for health records</title>
+<meta name="description" content="SovereignGuard checks each handoff of a patient's health record in the UAE against Dubai (DHA), Abu Dhabi (DoH) and federal rules before it leaves the hospital. Research prototype on simulated scenarios.">
+<meta name="theme-color" content="#14213d">
+<link rel="canonical" href="https://growinggiant576.github.io/Sovereignguard/demo/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="SovereignGuard - passport control for health records">
+<meta property="og:description" content="One agent per UAE regulator checks a patient-record handoff against that regulator's own documents: released, on hold with one checklist, or blocked.">
+<meta property="og:url" content="https://growinggiant576.github.io/Sovereignguard/demo/">
+<meta property="og:image" content="https://growinggiant576.github.io/Sovereignguard/demo/img/01_scenario_hold_care_passport.png">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root { --bg:#f4f6fa; --ink:#14213d; --muted:#4f5869; --card:#fff; --line:#dde3ee; --teal:#0f766e;
+          --amber:#9a4a07; --amberbg:#fff4e0; --green:#166534; --greenbg:#e7f6ec; --red:#a51c1c; --redbg:#fdecec; color-scheme:light; }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; }
+  a { color:var(--teal); }
+  a:focus-visible, button:focus-visible { outline:3px solid var(--teal); outline-offset:3px; border-radius:6px; }
+  .skip { position:absolute; left:-999px; top:0; background:#fff; padding:8px 12px; z-index:10; }
+  .skip:focus { left:8px; top:8px; }
+  .top { position:sticky; top:0; z-index:5; background:#fff; border-bottom:1px solid var(--line); }
+  .top .in { max-width:1680px; margin:0 auto; padding:10px clamp(14px,3vw,32px); display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+  .brand { font-weight:800; font-size:18px; letter-spacing:.02em; color:var(--ink); text-decoration:none; }
+  .brand span { color:var(--teal); }
+  .top nav { margin-left:auto; display:flex; gap:18px; flex-wrap:wrap; font-size:15px; }
+  .top nav a { text-decoration:none; font-weight:600; }
+  .wrap { max-width:1680px; margin:0 auto; padding:clamp(14px,3vw,32px); display:grid; gap:clamp(20px,3vw,36px); grid-template-columns:minmax(0,1fr); }
+  @media (min-width:1100px) { .wrap { grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); align-items:start; }
+                              .how { position:sticky; top:64px; } }
+  section { margin:0 0 34px; }
+  h1 { font-size:clamp(34px,5vw,52px); line-height:1.05; margin:4px 0 6px; letter-spacing:-.02em; }
+  .tagline { font-size:clamp(18px,2.2vw,22px); color:var(--teal); font-weight:700; margin:0 0 14px; }
+  .lead { font-size:18px; margin:0 0 12px; }
+  .note { background:#eef1f6; border-radius:10px; padding:10px 14px; font-size:15px; margin:0 0 12px; }
+  .team { color:var(--muted); font-size:15px; margin:0 0 16px; }
+  .cta { display:flex; gap:10px; flex-wrap:wrap; }
+  .btn { display:inline-flex; align-items:center; min-height:44px; padding:0 16px; border-radius:10px; font-weight:700; text-decoration:none;
+          border:1px solid var(--teal); background:#fff; color:var(--teal); font-size:15px; cursor:pointer; font-family:inherit; }
+  .btn.primary { background:var(--teal); color:#fff; }
+  h2 { font-size:24px; margin:0 0 6px; }
+  .sub { color:var(--muted); margin:0 0 14px; font-size:15px; }
+  .facts { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin:0; padding:0; list-style:none; }
+  .facts li { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px; }
+  .facts b { display:block; font-size:30px; line-height:1.1; color:var(--teal); }
+  .facts span { font-size:14px; color:#2b3550; }
+  .src { font-size:13px; color:var(--muted); margin:10px 0 0; }
+  .shot { margin:0 0 22px; background:var(--card); border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+  .shot img { display:block; width:100%; height:auto; border-bottom:1px solid var(--line); }
+  .shot figcaption { padding:10px 14px; font-size:14.5px; }
+  .tablewrap { container-type:inline-size; overflow-x:auto; background:var(--card); border:1px solid var(--line); border-radius:12px; }
+  table { border-collapse:collapse; width:100%; font-size:14px; min-width:640px; }
+  th, td { text-align:left; vertical-align:top; padding:9px 10px; border-bottom:1px solid var(--line); }
+  thead th { background:#eef1f6; font-size:13px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+  tbody th { font-weight:600; }
+  .step { display:block; font-weight:400; color:var(--muted); font-size:13px; }
+  .tag { display:inline-block; padding:2px 8px; border-radius:999px; font-weight:700; font-size:13px; }
+  .tag.hold { background:var(--amberbg); color:var(--amber); } .tag.rel { background:var(--greenbg); color:var(--green); } .tag.blk { background:var(--redbg); color:var(--red); }
+  ul.plain { padding-left:20px; margin:0; } ul.plain li { margin:4px 0; }
+  .how { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:clamp(12px,2vw,18px); }
+  .how h2 { margin-bottom:2px; }
+  .player { position:relative; width:100%; aspect-ratio:16/9; background:#0b1324; border-radius:10px; overflow:hidden; }
+  .player iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+  .controls { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:12px; }
+  .controls .count { font-weight:700; min-width:70px; text-align:center; }
+  .controls .right { margin-left:auto; display:flex; gap:10px; flex-wrap:wrap; }
+  .kbt table { min-width:0; }
+  @container (max-width:760px) {
+    .cards table { min-width:0; } .cards thead { position:absolute; left:-9999px; }
+    .cards table, .cards tbody, .cards tr, .cards th, .cards td { display:block; width:100%; }
+    .cards tr { border-bottom:2px solid var(--line); padding:6px 0; }
+    .cards tbody th, .cards td { border:0; padding:4px 12px; }
+    .cards td::before { content:attr(data-label); display:block; font-size:12px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  }
+  footer { max-width:1680px; margin:0 auto; padding:0 clamp(14px,3vw,32px) 40px; color:var(--muted); font-size:14px; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top"><div class="in">
+  <a class="brand" href="./">Sovereign<span>Guard</span></a>
+  <nav aria-label="Page"><a href="#product">The product</a><a href="#how">How it works</a><a href="#results">Results</a><a href="https://github.com/Growinggiant576/Sovereignguard" rel="noopener noreferrer">Code on GitHub</a></nav>
+</div></header>
+<div class="wrap">
+<main id="main">
+  <section id="product" aria-labelledby="t-product">
+    <h1 id="t-product">SovereignGuard</h1>
+    <p class="tagline">Passport control for health records</p>
+    <p class="lead">Before a patient's record leaves a hospital, one agent per UAE regulator (DHA, DoH, federal law) checks the handoff against that regulator's own documents. Fixed rules then release it, hold it with one checklist of what is missing (the Care Passport), or block it.</p>
+    <p class="note">Research prototype. Simulated scenarios only - no real patient data. Not legal advice. The knowledge base contains public documents only.</p>
+    <p class="team">Team Polaris · Asna Khan (team leader) · Shafi Anwar · ITU AI for Good Sandbox Hackathon, United Arab Emirates (2026)</p>
+    <div class="cta"><a class="btn primary" href="#how">See how it works</a><a class="btn" href="https://github.com/Growinggiant576/Sovereignguard" rel="noopener noreferrer">View the code</a></div>
+  </section>
+
+  <section aria-labelledby="t-facts">
+    <h2 id="t-facts">Key facts</h2>
+    <ul class="facts">
+      <li><b>3</b><span>regulator agents: Dubai (DHA), Abu Dhabi (DoH), UAE federal law</span></li>
+      <li><b>12</b><span>public UAE documents in the knowledge base, 797 passages</span></li>
+      <li><b>5</b><span>simulated scenarios, each run with and without SovereignGuard</span></li>
+      <li><b>122/122</b><span>quoted clauses found word for word in the passage they cite</span></li>
+    </ul>
+    <p class="src">Source: the saved runs in <a href="https://github.com/Growinggiant576/Sovereignguard/tree/main/runs" rel="noopener noreferrer">runs/</a> (Claude Opus 5.5, model ID <code>claude-opus-5-5</code>, run on 10 Nov 2026 (UTC)) and <a href="https://github.com/Growinggiant576/Sovereignguard/blob/main/kb/manifest.json" rel="noopener noreferrer">kb/manifest.json</a>. The quote check ignores capitals and spacing and confirms that each quote exists in the passage it cites; it does not confirm the legal reasoning.</p>
+  </section>
+
+  <section aria-labelledby="t-screens">
+    <h2 id="t-screens">The real product</h2>
+    <p class="sub">Screenshots of the SovereignGuard dashboard running locally with the saved runs (no model calls), taken on 17 Nov 2026. Select an image to open it full size.</p>
+    <figure class="shot">
+  <a href="img/01_scenario_hold_care_passport.png" aria-label="Open full-size screenshot: Scenarios tab: a care transfer from an Abu Dhabi hospital to a Dubai hospital."><img src="img/01_scenario_hold_care_passport.png" width="2880" height="2964" alt="Scenarios tab: a care transfer from an Abu Dhabi hospital to a Dubai hospital. Left: without SovereignGuard the record is sent at once. Right: with it, the record is on hold, the Care Passport lists what is still missing, and each regulator gives its own decision." decoding="async"></a>
+  <figcaption><strong>Scenarios tab: a care transfer from an Abu Dhabi hospital to a Dubai hospital.</strong> Left: without SovereignGuard the record is sent at once. Right: with it, the record is on hold, the Care Passport lists what is still missing, and each regulator gives its own decision.</figcaption>
+</figure><figure class="shot">
+  <a href="img/02_quoted_clauses_verified.png" aria-label="Open full-size screenshot: Quoted clauses, checked against the source text."><img src="img/02_quoted_clauses_verified.png" width="1691" height="2355" alt="Quoted clauses, checked against the source text. Each regulator quotes the clauses it relied on. A green tick means the quote was found word for word (ignoring capitals and spacing) in the passage it cites; the document name and passage ID are shown." loading="lazy" decoding="async"></a>
+  <figcaption><strong>Quoted clauses, checked against the source text.</strong> Each regulator quotes the clauses it relied on. A green tick means the quote was found word for word (ignoring capitals and spacing) in the passage it cites; the document name and passage ID are shown.</figcaption>
+</figure><figure class="shot">
+  <a href="img/03_outside_uae_blocked.png" aria-label="Open full-size screenshot: A transfer to a cloud server outside the UAE is blocked."><img src="img/03_outside_uae_blocked.png" width="1691" height="1258" alt="A transfer to a cloud server outside the UAE is blocked. UAE federal law blocks it and Dubai&#x27;s rules are silent, so the record is not released and the silence is logged as a gap." loading="lazy" decoding="async"></a>
+  <figcaption><strong>A transfer to a cloud server outside the UAE is blocked.</strong> UAE federal law blocks it and Dubai&#x27;s rules are silent, so the record is not released and the silence is logged as a gap.</figcaption>
+</figure><figure class="shot">
+  <a href="img/04_gap_register.png" aria-label="Open full-size screenshot: Gap register: evidence for regulators."><img src="img/04_gap_register.png" width="1755" height="501" alt="Gap register: evidence for regulators. Policy silences, disagreements between regulators and consent gaps found in the AI-training scenario." loading="lazy" decoding="async"></a>
+  <figcaption><strong>Gap register: evidence for regulators.</strong> Policy silences, disagreements between regulators and consent gaps found in the AI-training scenario.</figcaption>
+</figure><figure class="shot">
+  <a href="img/06_knowledge_base_search.png" aria-label="Open full-size screenshot: Knowledge base tab: search one regulator&#x27;s documents, on this computer, with no API key."><img src="img/06_knowledge_base_search.png" width="2624" height="1824" alt="Knowledge base tab: search one regulator&#x27;s documents, on this computer, with no API key. Here the top federal result is Article 13 of Federal Law No. 2 of 2019." loading="lazy" decoding="async"></a>
+  <figcaption><strong>Knowledge base tab: search one regulator&#x27;s documents, on this computer, with no API key.</strong> Here the top federal result is Article 13 of Federal Law No. 2 of 2019.</figcaption>
+</figure><figure class="shot">
+  <a href="img/07_architecture.png" aria-label="Open full-size screenshot: Architecture tab: how the building blocks connect."><img src="img/07_architecture.png" width="2624" height="915" alt="Architecture tab: how the building blocks connect. Labels follow the ITU-T Y.3172 pipeline nodes (architectural mapping, not a conformance claim)." loading="lazy" decoding="async"></a>
+  <figcaption><strong>Architecture tab: how the building blocks connect.</strong> Labels follow the ITU-T Y.3172 pipeline nodes (architectural mapping, not a conformance claim).</figcaption>
+</figure>
+  </section>
+
+  <section id="results" aria-labelledby="t-results">
+    <h2 id="t-results">Results of every scenario</h2>
+    <p class="sub">All scenarios are simulated. 1 handoff released, 4 on hold, 1 blocked. Full traces and readable reports for each run are in <a href="https://github.com/Growinggiant576/Sovereignguard/tree/main/runs" rel="noopener noreferrer">runs/</a>.</p>
+    <div class="tablewrap cards"><table>
+      <thead><tr><th scope="col">Scenario</th><th scope="col">Handoff</th><th scope="col">Regulators asked</th><th scope="col">Without SovereignGuard</th><th scope="col">With SovereignGuard</th><th scope="col">Quotes matched</th></tr></thead>
+      <tbody><tr><th scope="row">Continuing treatment: Abu Dhabi hospital to Dubai hospital</th><td data-label="Handoff">Origin hospital (DoH-licensed, Abu Dhabi) → Receiving hospital (DHA-licensed, Dubai)</td>
+<td data-label="Regulators asked">Dubai (DHA), Abu Dhabi (DoH), UAE federal law</td><td data-label="Without SovereignGuard">Sent at once; 1 problem not checked</td>
+<td data-label="With SovereignGuard"><span class="tag hold">On hold: 6 items still needed</span></td><td data-label="Quotes matched">24 of 24</td></tr><tr><th scope="row">Continuing treatment, after the Care Passport checklist is completed</th><td data-label="Handoff">Origin hospital (DoH-licensed, Abu Dhabi) → Receiving hospital (DHA-licensed, Dubai)</td>
+<td data-label="Regulators asked">Dubai (DHA), Abu Dhabi (DoH), UAE federal law</td><td data-label="Without SovereignGuard">Sent at once</td>
+<td data-label="With SovereignGuard"><span class="tag rel">Released</span></td><td data-label="Quotes matched">25 of 25</td></tr><tr><th scope="row">Secondary use: the same record reused for AI model training<span class="step">Step 1 of 2: Dubai hospital shares de-identified record with an AI research partner</span></th><td data-label="Handoff">Receiving hospital (DHA-licensed, Dubai) → AI research partner (Dubai)</td>
+<td data-label="Regulators asked">Dubai (DHA), UAE federal law</td><td data-label="Without SovereignGuard">Sent at once; 1 problem not checked</td>
+<td data-label="With SovereignGuard"><span class="tag hold">On hold: 7 items still needed</span></td><td data-label="Quotes matched">13 of 13</td></tr><tr><th scope="row">Secondary use: the same record reused for AI model training<span class="step">Step 2 of 2: Research partner processes the data on a cloud server outside the UAE</span></th><td data-label="Handoff">AI research partner (Dubai) → Cloud processing provider (outside the UAE)</td>
+<td data-label="Regulators asked">Dubai (DHA), UAE federal law</td><td data-label="Without SovereignGuard">Sent at once; 2 problems not checked</td>
+<td data-label="With SovereignGuard"><span class="tag blk">Blocked</span></td><td data-label="Quotes matched">15 of 15</td></tr><tr><th scope="row">AI training reuse, after the Care Passport checklist is completed</th><td data-label="Handoff">Hospital (DHA-licensed, Dubai) → AI research partner (Dubai)</td>
+<td data-label="Regulators asked">Dubai (DHA), UAE federal law</td><td data-label="Without SovereignGuard">Sent at once</td>
+<td data-label="With SovereignGuard"><span class="tag hold">On hold: 4 items still needed</span></td><td data-label="Quotes matched">19 of 19</td></tr><tr><th scope="row">Continuing treatment (Arabic-speaking patient)</th><td data-label="Handoff">Origin hospital (DoH-licensed, Abu Dhabi) → Receiving hospital (DHA-licensed, Dubai)</td>
+<td data-label="Regulators asked">Dubai (DHA), Abu Dhabi (DoH), UAE federal law</td><td data-label="Without SovereignGuard">Sent at once; 1 problem not checked</td>
+<td data-label="With SovereignGuard"><span class="tag hold">On hold: 8 items still needed</span></td><td data-label="Quotes matched">26 of 26</td></tr></tbody>
+    </table></div>
+  </section>
+
+  <section aria-labelledby="t-kb">
+    <h2 id="t-kb">Knowledge base: 12 public documents</h2>
+    <p class="sub">Each regulator agent searches only the documents in its own partition. Source links and issuers as recorded in the manifest; two are not regulations (the AI Strategy 2031 and Malaffi's privacy notice).</p>
+    <div class="tablewrap kbt"><table>
+      <thead><tr><th scope="col">Checked by</th><th scope="col">Document</th><th scope="col">Issuer</th><th scope="col">Accessed</th></tr></thead>
+      <tbody><tr><td data-label="Checked by">Federal agent</td><td data-label="Document"><a href="https://www.dha.gov.ae/uploads/082022/Federal%20Law%20No2022824434.pdf" rel="noopener noreferrer">Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare</a></td><td data-label="Issuer">Public Health Policies Department, Public health Policy and Licensing Sector (booklet); law issued by the President of the UAE</td><td data-label="Accessed">2026-11-10</td></tr><tr><td data-label="Checked by">Federal agent</td><td data-label="Document"><a href="https://ai.gov.ae/wp-content/uploads/2021/07/UAE-National-Strategy-for-Artificial-Intelligence-2031.pdf" rel="noopener noreferrer">UAE National Strategy for Artificial Intelligence 2031</a></td><td data-label="Issuer">UAE Government - Office of the Minister of State for Artificial Intelligence (ai.gov.ae)</td><td data-label="Accessed">2026-11-10</td></tr><tr><td data-label="Checked by">DHA agent</td><td data-label="Document"><a href="https://nabidh.dha.gov.ae/cms/uploads/5bb756c30fec4f01b04d4e90a635a313.pdf" rel="noopener noreferrer">NABIDH Policies and Standards</a></td><td data-label="Issuer">Dubai Health Authority (DHA)</td><td data-label="Accessed">2026-11-10</td></tr><tr><td data-label="Checked by">DHA agent</td><td data-label="Document"><a href="https://nabidh.dha.gov.ae/cms/uploads/3652b370cb92403191417e920ab0f343.pdf" rel="noopener noreferrer">Policy for Health Data and Information Sharing</a></td><td data-label="Issuer">Dubai Health Authority</td><td data-label="Accessed">2026-11-10</td></tr><tr><td data-label="Checked by">DHA agent</td><td data-label="Document"><a href="https://nabidh.dha.gov.ae/cms/uploads/2e5de3bcf44943dd9f1980f283101b4c.pdf" rel="noopener noreferrer">Standards for Health Information Consent and Access Control</a></td><td data-label="Issuer">Dubai Health Authority</td><td data-label="Accessed">2026-11-10</td></tr><tr><td data-label="Checked by">DHA agent</td><td data-label="Document"><a href="https://nabidh.dha.gov.ae/cms/uploads/7c2063bf99f84bdcb88a4dc0933718b2.pdf" rel="noopener noreferrer">Artificial Intelligence in the Healthcare Policy</a></td><td data-label="Issuer">Dubai Health Authority - Health Informatics and Smart Health Department</td><td data-label="Accessed">2026-11-10</td></tr><tr><td data-label="Checked by">DHA agent</td><td data-label="Document"><a href="https://www.dha.gov.ae/uploads/082022/Health%20Data%20Protection%20and%20Confidentiality%20Policy_EN2022810559.pdf" rel="noopener noreferrer">Policy for Data and Health Information Protection and Confidentiality</a></td><td data-label="Issuer">Dubai Health Authority</td><td data-label="Accessed">2026-11-10</td></tr><tr><td data-label="Checked by">DHA agent</td><td data-label="Document"><a href="https://nabidh.dha.gov.ae/cms/uploads/5285f4bb21d64b6abb17a2e28d55cd4a.pdf" rel="noopener noreferrer">My Personal Health Data Preferences</a></td><td data-label="Issuer">Dubai Health Authority (NABIDH)</td><td data-label="Accessed">2026-11-10</td></tr><tr><td data-label="Checked by">DoH agent</td><td data-label="Document"><a href="https://staticcdn.malaffi.ae/wpblobe9e5523f25/2020/04/doh-policy-on-the-adhie-april-2020.pdf" rel="noopener noreferrer">Policy on the Abu Dhabi Health Information Exchange (HIE)</a></td><td data-label="Issuer">Department of Health Abu Dhabi (DOH) - Strategy Division</td><td data-label="Accessed">2026-11-10</td></tr><tr><td data-label="Checked by">DoH agent</td><td data-label="Document"><a href="https://staticcdn.malaffi.ae/wpblobe9e5523f25/2021/02/2020-09-15-DOH-Standard-on-Patient-Healthcare-Data-Privacy-for-publication-2.pdf" rel="noopener noreferrer">DOH Standard on Patient Healthcare Data Privacy</a></td><td data-label="Issuer">Department of Health Abu Dhabi (DOH) - Support Services Division</td><td data-label="Accessed">2026-11-10</td></tr><tr><td data-label="Checked by">DoH agent</td><td data-label="Document"><a href="https://staticcdn.malaffi.ae/wpblobe9e5523f25/2019/11/ADHICS_Standard-Final.pdf" rel="noopener noreferrer">Abu Dhabi - Healthcare Information and Cyber Security Standard</a></td><td data-label="Issuer">Department of Health Abu Dhabi (DOH)</td><td data-label="Accessed">2026-11-10</td></tr><tr><td data-label="Checked by">DoH agent</td><td data-label="Document"><a href="https://www.malaffi.ae/privacy-notice/" rel="noopener noreferrer">Privacy Notice</a></td><td data-label="Issuer">Abu Dhabi Health Data Services - Sole Proprietorship LLC (ADHDS) - Malaffi</td><td data-label="Accessed">2026-11-10</td></tr></tbody>
+    </table></div>
+  </section>
+
+  <section aria-labelledby="t-run">
+    <h2 id="t-run">Run it yourself</h2>
+    <p>The code, the saved runs and the set-up steps are on <a href="https://github.com/Growinggiant576/Sovereignguard" rel="noopener noreferrer">GitHub</a>. The dashboard runs on your own computer only (127.0.0.1). Its Scenarios tab works without an API key. The Knowledge base tab also needs no key, but needs a one-time local build of the knowledge base. Re-running the agents needs your own Anthropic API key. <a href="https://github.com/Growinggiant576/Sovereignguard#dashboard-local-demo" rel="noopener noreferrer">Dashboard steps</a>.</p>
+  </section>
+
+  <section aria-labelledby="t-limits">
+    <h2 id="t-limits">Limitations</h2>
+    <ul class="plain"><li>Research prototype on simulated scenarios; regulator agents&#x27; interpretations have not been reviewed by a lawyer.</li><li>Some documents may have newer versions than the ones we obtained.</li><li>Retrieval uses a small general-purpose embedding model; a relevant clause can be missed, which may show up as SILENT.</li><li>The prototype sends only simulated scenarios and public regulation text to the model API. A real deployment must run inside the UAE.</li><li>Requires an Anthropic API key for governed mode. An offline local-model option is planned, not yet implemented.</li></ul>
+  </section>
+</main>
+
+<aside id="how" class="how" aria-labelledby="t-how">
+  <h2 id="t-how">Understand how it works</h2>
+  <p class="sub" id="how-sub">Step by step. Scenario results come from the saved runs; the setup, policy gaps and next steps come from our technical report. Use the buttons below, or click the slide and use the arrow keys.</p>
+  <div class="player"><iframe id="deck" src="walkthrough.html?embed=1" title="SovereignGuard walkthrough slides" allow="fullscreen" allowfullscreen></iframe></div>
+  <div class="controls">
+    <button class="btn" type="button" id="prev" aria-controls="deck">← Back</button>
+    <span class="count" id="count" aria-live="polite">1 / …</span>
+    <button class="btn primary" type="button" id="next" aria-controls="deck">Next →</button>
+    <span class="right"><button class="btn" type="button" id="full">Full screen (easier to read)</button><a class="btn" href="walkthrough.html" target="_blank" rel="noopener">Open in new tab</a></span>
+  </div>
+</aside>
+</div>
+<footer>Team Polaris · <a href="https://github.com/Growinggiant576/Sovereignguard" rel="noopener noreferrer">github.com/Growinggiant576/Sovereignguard</a> · This page shows saved results only; it makes no model calls and sends no data.</footer>
+<script>
+(() => {
+  const deck = document.getElementById("deck"), count = document.getElementById("count");
+  const send = msg => deck.contentWindow && deck.contentWindow.postMessage(msg, "*");   // slide commands only
+  document.getElementById("prev").addEventListener("click", () => send({sg: "step", d: -1}));
+  document.getElementById("next").addEventListener("click", () => send({sg: "step", d: 1}));
+  document.getElementById("full").addEventListener("click", () => {
+    if (deck.requestFullscreen) deck.requestFullscreen().catch(() => window.open("walkthrough.html", "_blank", "noopener"));
+    else window.open("walkthrough.html", "_blank", "noopener");
+  });
+  window.addEventListener("message", ev => {
+    if (ev.source !== deck.contentWindow || !ev.data || ev.data.sg !== "pos") return;
+    if (Number.isInteger(ev.data.i) && Number.isInteger(ev.data.n)) count.textContent = (ev.data.i + 1) + " / " + ev.data.n;
+  });
+})();
+</script>
+</body>
+</html>

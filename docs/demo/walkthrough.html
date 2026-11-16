@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SovereignGuard - how it works (walkthrough)</title>
+<meta name="description" content="Step-by-step walkthrough of SovereignGuard. Scenario results come from the saved runs of the real system.">
+<meta name="robots" content="noindex">
+<style>
+  :root { --bg:#f4f6fa; --ink:#14213d; --muted:#5b6476; --card:#ffffff; --line:#dde3ee;
+          --teal:#0f766e; --amber:#b45309; --amberbg:#fff4e0; --green:#15803d; --greenbg:#e7f6ec;
+          --red:#b91c1c; --redbg:#fdecec; --violet:#6d28d9; --violetbg:#f1ebfd;
+          --vh:10.8px; --vw:19.2px; --k:1; color-scheme: light; }
+  * { box-sizing:border-box; }
+  html,body { margin:0; height:100%; overflow:hidden; background:#0b1324; }
+  /* The slides are designed on a fixed 1920x1080 canvas and scaled to fit any window or frame. */
+  #vp { position:fixed; inset:0; overflow:hidden; }
+  #canvas { position:absolute; left:50%; top:50%; width:1920px; height:1080px; transform:translate(-50%,-50%) scale(var(--k));
+            display:grid; grid-template-rows:calc(7*var(--vh)) calc(13*var(--vh)) 1fr calc(15*var(--vh)); overflow:hidden;
+            background:var(--bg); color:var(--ink); cursor:pointer;
+            font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; }
+  header { display:flex; align-items:center; justify-content:space-between; gap:calc(2*var(--vw)); padding:0 calc(3*var(--vw)); border-bottom:1px solid var(--line); background:#fff; }
+  header .brand { font-weight:800; font-size:calc(2.2*var(--vh)); letter-spacing:.02em; }
+  header .brand span { color:var(--teal); }
+  header .where { font-size:calc(1.8*var(--vh)); color:var(--muted); margin-left:auto; }
+  header a.back { font-size:calc(1.7*var(--vh)); color:var(--teal); font-weight:700; text-decoration:none; }
+  header a.back:focus-visible { outline:3px solid var(--teal); outline-offset:4px; }
+  body.embed header a.back { display:none; }
+  #pipe { display:flex; align-items:center; justify-content:center; gap:calc(.6*var(--vw)); padding:0 calc(2*var(--vw)); }
+  .node { min-width:calc(9.5*var(--vw)); padding:calc(1*var(--vh)) calc(.8*var(--vw)); border-radius:calc(1.2*var(--vh)); border:2px solid var(--line); background:#fff;
+          text-align:center; font-size:calc(1.55*var(--vh)); font-weight:600; color:var(--muted); transition:all .45s ease; }
+  .node small { display:block; font-size:calc(1.2*var(--vh)); font-weight:700; letter-spacing:.08em; color:#97a0b2; margin-bottom:calc(.3*var(--vh)); }
+  .node.active { border-color:var(--teal); color:var(--ink); box-shadow:0 0 0 calc(.6*var(--vh)) rgba(15,118,110,.18); transform:translateY(calc(-.4*var(--vh))); }
+  .node.done { border-color:#9fd5cf; color:var(--ink); }
+  .node.skip { opacity:.32; }
+  .node.hold { border-color:var(--amber); background:var(--amberbg); color:var(--amber); }
+  .node.rel  { border-color:var(--green); background:var(--greenbg); color:var(--green); }
+  .node.blk  { border-color:var(--red); background:var(--redbg); color:var(--red); }
+  .arrow { color:#b5bdcc; font-size:calc(2*var(--vh)); }
+  #stage { padding:calc(2*var(--vh)) calc(4*var(--vw)); overflow:hidden; position:relative; }
+  #caption { display:flex; align-items:center; padding:0 calc(4*var(--vw)); background:var(--ink); color:#fff; font-size:calc(2.7*var(--vh)); line-height:1.35; font-weight:500; }
+  #caption .hint { margin-left:auto; padding-left:calc(2*var(--vw)); font-size:calc(1.4*var(--vh)); color:#8f9ab0; white-space:nowrap; }
+  .pop { animation:pop .5s ease both; }
+  @keyframes pop { from { opacity:0; transform:translateY(calc(1.2*var(--vh))) scale(.98); } to { opacity:1; transform:none; } }
+  @media (prefers-reduced-motion: reduce) { .pop { animation:none; } .node { transition:none; } }
+  .title { text-align:center; margin-top:calc(6*var(--vh)); }
+  .title h1 { font-size:calc(8*var(--vh)); margin:0; letter-spacing:-.02em; }
+  .title h2 { font-size:calc(3.4*var(--vh)); margin:calc(1.5*var(--vh)) 0 calc(4*var(--vh)); color:var(--teal); font-weight:600; }
+  .title p { font-size:calc(2.2*var(--vh)); color:var(--muted); margin:calc(.6*var(--vh)) 0; }
+  .row { display:flex; gap:calc(2*var(--vw)); justify-content:center; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:calc(1.6*var(--vh)); padding:calc(2*var(--vh)) calc(1.6*var(--vw)); box-shadow:0 calc(.4*var(--vh)) calc(1.4*var(--vh)) rgba(20,33,61,.05); }
+  .card h3 { margin:0 0 calc(1*var(--vh)); font-size:calc(2.3*var(--vh)); }
+  .card p, .card li { font-size:calc(1.9*var(--vh)); line-height:1.4; color:#2b3550; }
+  .card ul { margin:0; padding-left:calc(2.2*var(--vh)); }
+  .chip { display:inline-block; padding:calc(.5*var(--vh)) calc(1*var(--vw)); border-radius:999px; font-size:calc(1.6*var(--vh)); font-weight:700; margin:calc(.4*var(--vh)) calc(.3*var(--vw)) calc(.4*var(--vh)) 0; }
+  .c-amber { background:var(--amberbg); color:var(--amber); } .c-green { background:var(--greenbg); color:var(--green); }
+  .c-red { background:var(--redbg); color:var(--red); } .c-violet { background:var(--violetbg); color:var(--violet); }
+  .c-gray { background:#eef1f6; color:#4a5468; }
+  .split { display:grid; grid-template-columns:1fr 2.1fr; gap:calc(2*var(--vw)); height:100%; }
+  .col h4 { margin:0 0 calc(1.2*var(--vh)); font-size:calc(2*var(--vh)); color:var(--muted); text-transform:uppercase; letter-spacing:.08em; }
+  .handoff { font-size:calc(1.9*var(--vh)); margin-bottom:calc(1.4*var(--vh)); }
+  .handoff b { color:var(--ink); }
+  .banner { border-radius:calc(1.4*var(--vh)); padding:calc(1.6*var(--vh)) calc(1.4*var(--vw)); font-size:calc(2.4*var(--vh)); font-weight:800; margin-bottom:calc(1.4*var(--vh)); }
+  .b-sent { background:var(--redbg); color:var(--red); } .b-hold { background:var(--amberbg); color:var(--amber); }
+  .b-rel { background:var(--greenbg); color:var(--green); } .b-blk { background:var(--redbg); color:var(--red); }
+  .banner span { display:block; font-size:calc(1.7*var(--vh)); font-weight:500; margin-top:calc(.4*var(--vh)); }
+  .regs { display:grid; grid-template-columns:repeat(3,1fr); gap:calc(1*var(--vw)); margin-top:calc(1*var(--vh)); }
+  .reg h5 { margin:0 0 calc(.6*var(--vh)); font-size:calc(1.9*var(--vh)); }
+  .reg .q { font-size:calc(1.5*var(--vh)); color:#2b3550; font-style:italic; margin-top:calc(.8*var(--vh)); max-height:calc(22*var(--vh)); overflow:hidden; }
+  .reg .src { font-size:calc(1.3*var(--vh)); color:var(--muted); margin-top:calc(.5*var(--vh)); }
+  .ok { color:var(--green); font-weight:700; font-size:calc(1.5*var(--vh)); }
+  .list li { margin:calc(.5*var(--vh)) 0; }
+  .lg li, .lg p { font-size:calc(2.4*var(--vh)); line-height:1.45; margin:calc(1.2*var(--vh)) 0; }
+  .box { font-size:calc(1.8*var(--vh)); }
+  .rtl { direction:rtl; text-align:right; font-family:"Geeza Pro","SF Arabic","Noto Naskh Arabic",sans-serif; }
+  .big { font-size:calc(7*var(--vh)); font-weight:800; color:var(--teal); line-height:1; }
+  .muted { color:var(--muted); }
+  .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:calc(1.6*var(--vw)); }
+</style>
+</head>
+<body>
+<div id="vp"><div id="canvas" role="region" aria-label="SovereignGuard walkthrough slides" aria-roledescription="slide deck">
+<header><div class="brand">Sovereign<span>Guard</span> · Team Polaris</div><div class="where" id="where" aria-live="polite"></div><a class="back" href="./" id="back">← Product page</a></header>
+<div id="pipe" aria-hidden="true"></div>
+<div id="stage"></div>
+<div id="caption"><div id="captext" aria-live="polite"></div><div class="hint">click or → next &nbsp; ← back</div></div>
+</div></div>
+<script id="data" type="application/json">{"scenarios": [{"id": "s1_care_transfer", "title": "Continuing treatment: Abu Dhabi hospital to Dubai hospital", "request": "I am being treated at a hospital in Abu Dhabi and I am moving to Dubai. Please send my medical records to my new hospital in Dubai so my treatment can continue.", "lang": "en", "plan": {"language": "en", "headline": "Your records have not been sent yet: your signed consent is needed first", "status_in_plain_words": "Sending your medical records from Abu Dhabi to your new hospital in Dubai is paused. All three regulators (Abu Dhabi DOH, Dubai DHA, and federal) allow this transfer for continuing treatment, but only once certain conditions are met. Right now there is no signed written consent from you showing that you agree to share your records with the Dubai hospital. It is also not yet clear which sharing route will be used (a referral, or a health exchange system such as Malaffi or Nabidh). The rules do not yet cover whether a consent you gave in Abu Dhabi automatically counts in Dubai. No data has been released.", "what_you_need_to_do": ["Sign a written consent that names your new Dubai hospital as the receiver of your records.", "Tell the hospitals if you want to limit which facilities can see your records.", "Ask both hospitals which route they will use: a referral or a health information exchange (Malaffi, Nabidh, Riayati).", "If the Dubai hospital requests your records itself, be ready to give a separate consent for that request."], "what_happens_next": "Once your consent and the sharing route are confirmed, the transfer can go ahead. Only the information needed for your treatment will be shared, and it will stay within the UAE.", "disclaimer": "This is a research prototype, not legal or medical advice."}, "steps": [{"id": "1", "title": "Release treatment record to the Dubai hospital", "from": "Origin hospital (DoH-licensed, Abu Dhabi)", "to": "Receiving hospital (DHA-licensed, Dubai)", "purpose": "treatment", "outcome": "PAUSE", "consent": ["Consent for 'treatment' was recorded under DOH; the receiving party is under DHA. Whether the receiving regulator recognises that consent must be checked."], "missed": ["Consent for 'treatment' was recorded under DOH; the receiving party is under DHA. Whether the receiving regulator recognises that consent must be checked."], "regs": [{"code": "DHA", "decision": "PERMIT_WITH_CONDITIONS", "verified": 9, "total": 9, "quote": "request from the other Entity (separate Patient consent is required in this case).", "doc": "Policy for Health Data and Information Sharing", "unmet": ["No evidence of a clear signed patient consent recognised under DHA requirements (Consent & Access Control Policy) for this inter-entity transfer.", "No evidence of the sharing route used (referral process, or HIE exchange via Nabidh/Malaffi/Riayati).", "No evidence of separate patient consent for a request by the Dubai hospital to the Abu Dhabi hospital, if the transfer is initiated that way."]}, {"code": "DOH", "decision": "PERMIT_WITH_CONDITIONS", "verified": 8, "total": 8, "quote": "Must not use it without the written consent of the patient, except in the following cases.", "doc": "DOH Standard on Patient Healthcare Data Privacy", "unmet": ["No signed written patient consent for disclosure to the Dubai hospital has been provided, and no evidence shows the exchange uses the Malaffi/ADHIE platform between participating facilities.", "No evidence confirms the patient has not restricted disclosure to this facility through selective disclosure."]}, {"code": "FEDERAL", "decision": "PERMIT_WITH_CONDITIONS", "verified": 7, "total": 7, "quote": "anyone who exchanges and circulates patient information must ensure its confidentiality and not use it for non-health purposes, and without the written consent of the patient, except in the following cases:", "doc": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare", "unmet": ["Written patient consent covering disclosure to the receiving Dubai (DHA-licensed) hospital is not shown. The tracker records a treatment consent under DOH, but it does not show whether that consent is written or whether it extends to this receiver. Alternatively, the parties would need to document reliance on an Article 16 exception."]}]}], "gaps": 1}, {"id": "s4_care_transfer_completed", "title": "Continuing treatment, after the Care Passport checklist is completed", "request": "I have signed the consent forms both hospitals gave me. Please send my records to my new hospital in Dubai so my treatment can continue.", "lang": "en", "plan": {"language": "en", "headline": "Your treatment record can be sent to your new hospital in Dubai", "status_in_plain_words": "Good news: the transfer of your treatment record to the Dubai hospital was allowed to go ahead, and the record has been released. All three regulators checked (Abu Dhabi DoH, Dubai DHA and the federal rules) said yes, with conditions. Your signed consent forms at both hospitals met their requirements. Nothing is missing. The conditions are mainly duties for the hospitals: keep your record confidential, use it only for your continuing treatment, share only what your care needs, send it securely, and keep it stored inside the UAE. One note: the rules provided do not yet clearly cover direct sharing between emirates outside the Malaffi/ADHIE platform, and some federal procedural rules were referenced but not provided.", "what_you_need_to_do": ["Nothing more is required from you right now.", "If you limited what could be shared on your consent forms, check with your new hospital that only those parts were sent.", "Ask your Dubai hospital to confirm they have received your record before your next appointment."], "what_happens_next": "Your Dubai hospital receives your record and uses it only to continue your treatment, keeping it confidential and inside the UAE.", "disclaimer": "SovereignGuard is a research prototype; this is not legal or medical advice."}, "steps": [{"id": "1", "title": "Release treatment record to the Dubai hospital", "from": "Origin hospital (DoH-licensed, Abu Dhabi)", "to": "Receiving hospital (DHA-licensed, Dubai)", "purpose": "treatment", "outcome": "PROCEED", "consent": [], "missed": [], "regs": [{"code": "DHA", "decision": "PERMIT_WITH_CONDITIONS", "verified": 8, "total": 8, "quote": "Where a Patient’s care/treatment is transferred to another Entity, a copy of the medical record may be transferred directly with the Data Subject/Patient or via a request from the other Entity (separate Patient consent is required in this case).", "doc": "Policy for Health Data and Information Sharing", "unmet": []}, {"code": "DOH", "decision": "PERMIT_WITH_CONDITIONS", "verified": 9, "total": 9, "quote": "Must not use it without the written consent of the patient, except in the following cases.", "doc": "DOH Standard on Patient Healthcare Data Privacy", "unmet": []}, {"code": "FEDERAL", "decision": "PERMIT_WITH_CONDITIONS", "verified": 8, "total": 8, "quote": "anyone who exchanges and circulates patient information must ensure its confidentiality and not use it for non-health purposes, and without the written consent of the patient", "doc": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare", "unmet": []}]}], "gaps": 0}, {"id": "s2_research_reuse", "title": "Secondary use: the same record reused for AI model training", "request": "I only agreed to share my records for my treatment. I want to know who else can use them.", "lang": "en", "plan": {"language": "en", "headline": "Your records have not been shared with anyone else. Both steps are on hold.", "status_in_plain_words": "Your consent covers treatment only. The hospital wanted to give a 'de-identified' copy to an AI research partner. This is paused: no proof yet shows the data is truly anonymous, no research ethics approval is shown, and there is no data sharing agreement. The partner also planned to process the data on a cloud server outside the UAE. Federal law blocks this unless a health authority decree allows it, and none is shown. Dubai (DHA) rules do not yet cover this offshore step in the material reviewed. Nothing has been released.", "what_you_need_to_do": ["Nothing is required. Your data stays put unless the missing conditions are met.", "If anyone asks you to agree to research or AI training, you may say yes or no. Your current consent does not cover it.", "Ask the hospital how it would prove your data is truly anonymous and whether ethics approval exists."], "what_happens_next": "Sharing can go ahead only if the hospital provides the missing proof. Offshore processing stays blocked unless a decree is issued. A human reviewer will check these results.", "disclaimer": "This is a research prototype, not legal or medical advice."}, "steps": [{"id": "1", "title": "Dubai hospital shares de-identified record with an AI research partner", "from": "Receiving hospital (DHA-licensed, Dubai)", "to": "AI research partner (Dubai)", "purpose": "research ai training", "outcome": "PAUSE", "consent": ["Proposed purpose 'research_ai_training' is not in any recorded consent (recorded purposes: treatment)."], "missed": ["Proposed purpose 'research_ai_training' is not in any recorded consent (recorded purposes: treatment)."], "regs": [{"code": "DHA", "decision": "PERMIT_WITH_CONDITIONS", "verified": 8, "total": 8, "quote": "If it is not practicable to work with anonymous data, then consent is normally required", "doc": "Standards for Health Information Consent and Access Control", "unmet": ["No evidence shows the data is anonymised rather than pseudonymised; it is only 'described as de-identified'.", "No evidence shows that proper controls verified the anonymisation.", "No consent covers research or AI training (the recorded purpose is treatment only). This consent is needed if the data turns out to be identifiable or pseudonymised.", "No documented legal basis or data sharing agreement for this sharing is shown."]}, {"code": "FEDERAL", "decision": "PERMIT_WITH_CONDITIONS", "verified": 5, "total": 5, "quote": "2. The purposes of scientific and clinical research, provided that the patient's identity is not disclosed and that the ethics and rules of scientific research are followed.", "doc": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare", "unmet": ["No evidence shows the data meets the requirement that the patient's identity is not disclosed. The sender only states that the data is de-identified, and no method or verification is provided.", "No evidence shows that the ethics and rules of scientific research are being followed, such as research ethics committee approval or a research protocol.", "No evidence shows that the AI training is a scientific or clinical research activity rather than commercial product development."]}]}, {"id": "2", "title": "Research partner processes the data on a cloud server outside the UAE", "from": "AI research partner (Dubai)", "to": "Cloud processing provider (outside the UAE)", "purpose": "research ai training", "outcome": "BLOCK", "consent": ["Proposed purpose 'research_ai_training' is not in any recorded consent (recorded purposes: treatment).", "Data would be stored or processed outside the UAE."], "missed": ["Proposed purpose 'research_ai_training' is not in any recorded consent (recorded purposes: treatment).", "Data would be stored or processed outside the UAE."], "regs": [{"code": "DHA", "decision": "SILENT", "verified": 9, "total": 9, "quote": "National and locally based international AI developers that utilize Dubai based population or patient clinical and nonclinical data to develop AI solutions.", "doc": "Artificial Intelligence in the Healthcare Policy", "unmet": ["No consent for research or AI training: the recorded consent covers treatment only.", "No evidence that the data is truly anonymous rather than pseudonymised.", "No evidence of a legal basis for the offshore transfer or that a permitted case under Ministerial Decision 51/2021 applies.", "No evidence of secure transfer means or a data sharing agreement with the cloud provider."]}, {"code": "FEDERAL", "decision": "BLOCK", "verified": 6, "total": 6, "quote": "It is not permitted to store, develop, or transfer\ndata and health information outside the\ncountry that is related to health services\nprovided within the country, except in cases\nwhere a decree is issued by the health\nauthority in coordination with the ministry.", "doc": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare", "unmet": ["No evidence of a decree from the health authority, issued in coordination with the Ministry, permitting this data to be stored or processed outside the UAE (Art. 13).", "No evidence that the ethics and rules of scientific research are being followed, such as research ethics approval, for the research exception in Art. 16(2).", "No evidence that the de-identification is enough to ensure the patient's identity is not disclosed."]}]}], "gaps": 4}, {"id": "s5_ai_training_completed", "title": "AI training reuse, after the Care Passport checklist is completed", "request": "I have agreed that my de-identified records can be used to train an AI model for research, as long as they stay in the UAE.", "lang": "en", "plan": {"language": "en", "headline": "Your research data share is paused while the hospital finishes some checks", "status_in_plain_words": "Both the Dubai Health Authority (DHA) and federal rules say this share can go ahead, but only with conditions. Federal rules show nothing missing. DHA has 4 items still unproven, so the share is paused and no data has been released yet. DHA needs proof that your records are truly anonymised, not just pseudonymised (for example, the hospital keeping a key that could link the data back to you). The agreement also needs to show how your rights and access requests are handled, and who the responsible contacts are at each organisation. Reviewers also noted that whether AI model training counts as 'scientific and clinical research' still needs human review.", "what_you_need_to_do": ["Nothing is required from you right now; your consent is on record.", "You can ask the hospital whether a re-linking key is kept for your data.", "You can ask the hospital how to request access to your data and who the responsible contact is.", "Remember your consent is revocable; you can withdraw it if you change your mind."], "what_happens_next": "Once the hospital provides the missing DHA evidence, the share can proceed. Your data must stay in the UAE, stay confidential, be used only for health research, and your identity must never be disclosed.", "disclaimer": "This is a research prototype, not legal or medical advice."}, "steps": [{"id": "1", "title": "Hospital shares de-identified record with an AI research partner (inside the UAE)", "from": "Hospital (DHA-licensed, Dubai)", "to": "AI research partner (Dubai)", "purpose": "research ai training", "outcome": "PAUSE", "consent": [], "missed": [], "regs": [{"code": "DHA", "decision": "PERMIT_WITH_CONDITIONS", "verified": 11, "total": 11, "quote": "If it is not practicable to work with anonymous data, then consent is normally required", "doc": "Standards for Health Information Consent and Access Control", "unmet": ["No evidence that proper controls verified the anonymisation (for example, a re-identification risk review covering quasi-identifiers in the clinical record and imaging, such as image metadata).", "No evidence on whether a re-linking key or pseudonym is kept, which would make the data pseudonymised PHI under DHA.", "The data-sharing agreement, as described, does not show data subject rights or procedures for handling access requests.", "The data-sharing agreement, as described, does not show the details and contact information of the responsible persons at each participating entity."]}, {"code": "FEDERAL", "decision": "PERMIT_WITH_CONDITIONS", "verified": 8, "total": 8, "quote": "2. The purposes of scientific and clinical research, provided that the patient's identity is not disclosed and that the ethics and rules of scientific research are followed.", "doc": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare", "unmet": []}]}], "gaps": 0}, {"id": "s3_care_transfer_arabic", "title": "Continuing treatment (Arabic-speaking patient)", "request": "أتلقى العلاج في مستشفى في أبوظبي وسأنتقل إلى دبي. أرجو إرسال ملفي الطبي إلى مستشفاي الجديد في دبي حتى يستمر علاجي.", "lang": "ar", "plan": {"language": "ar", "headline": "نقل ملفك الطبي إلى مستشفى دبي متوقف مؤقتاً، ولم يُرسل أي شيء بعد", "status_in_plain_words": "الجهات الثلاث (دائرة الصحة في أبوظبي، وهيئة الصحة في دبي، والقانون الاتحادي) تسمح بنقل ملفك لمواصلة علاجك داخل الإمارات، لكن بشروط لم تكتمل بعد. السبب الرئيسي: لا توجد موافقة مكتوبة منك تشمل إرسال الملف إلى مستشفى دبي، ولم يُحدَّد طريق الإرسال. الموافقة المسجلة حالياً هي موافقة «علاج» لدى دائرة الصحة في أبوظبي، وشكلها ونطاقها غير مؤكدين. القواعد المتاحة لا تقول بعد هل تقبل هيئة الصحة في دبي هذه الموافقة.", "what_you_need_to_do": ["وقّع موافقة مكتوبة وواضحة تسمح تحديداً بإرسال ملفك إلى مستشفاك الجديد في دبي، وبصيغة تقبلها هيئة الصحة في دبي.", "إذا طلب مستشفى دبي ملفك بنفسه، فستحتاج إلى تقديم موافقة منفصلة.", "اسأل المستشفيين عن طريق الإرسال: تحويل طبي بموافقة موقّعة، أو منصة تبادل معتمدة (ملفي، نابض، رياتي)، أو أن تحمل ملفك بنفسك.", "أخبر المستشفى إذا كانت لديك رغبة في تحديد الجهات التي يحق لها استلام بياناتك."], "what_happens_next": "بعد توفر موافقتك وتحديد طريق الإرسال، يجب أن يلتزم المستشفيان بالسرية، وباستخدام البيانات لأغراض صحية فقط، وبمشاركة ما يلزم لعلاجك فقط مع أشخاص مخوّلين، مع بقاء البيانات داخل الإمارات. بعدها يمكن مراجعة الطلب من جديد.", "disclaimer": "هذا نموذج بحثي تجريبي، وليس استشارة قانونية أو طبية."}, "steps": [{"id": "1", "title": "Release treatment record to the Dubai hospital", "from": "Origin hospital (DoH-licensed, Abu Dhabi)", "to": "Receiving hospital (DHA-licensed, Dubai)", "purpose": "treatment", "outcome": "PAUSE", "consent": ["Consent for 'treatment' was recorded under DOH; the receiving party is under DHA. Whether the receiving regulator recognises that consent must be checked."], "missed": ["Consent for 'treatment' was recorded under DOH; the receiving party is under DHA. Whether the receiving regulator recognises that consent must be checked."], "regs": [{"code": "DHA", "decision": "PERMIT_WITH_CONDITIONS", "verified": 9, "total": 9, "quote": "request from the other Entity (separate Patient consent is required in this case).", "doc": "Policy for Health Data and Information Sharing", "unmet": ["No evidence of patient consent that meets DHA requirements for this transfer; the only consent noted was recorded under DOH.", "The sharing route used (referral, HIE exchange, or patient-carried) is not shown."]}, {"code": "DOH", "decision": "PERMIT_WITH_CONDITIONS", "verified": 9, "total": 9, "quote": "Must not use it without the written consent of the patient, except in the following cases.", "doc": "DOH Standard on Patient Healthcare Data Privacy", "unmet": ["No written patient consent covering disclosure to the DHA-licensed Dubai hospital is shown. The tracker notes only a 'treatment' consent recorded under DOH, and its form and scope are unverified.", "No evidence shows that the sharing route is the Malaffi/ADHIE exchange, which is the alternative exception basis."]}, {"code": "FEDERAL", "decision": "PERMIT_WITH_CONDITIONS", "verified": 8, "total": 8, "quote": "anyone who exchanges and circulates patient information must ensure its confidentiality and not use it for non-health purposes, and without the written consent of the patient, except in the following cases:", "doc": "Federal Law No. (2) For the year 2019 On the Use of Information and Communications Technology (ICT) in Healthcare", "unmet": ["The evidence does not show written consent from the patient that satisfies Article 16. The tracker shows only a 'treatment' consent recorded under DOH, and its form (written or not) and scope are not established.", "No documented reliance on an Article 16 exception is shown as an alternative to written consent.", "There is no evidence that the receiving hospital has committed to confidentiality and health-purpose-only use.", "There is no evidence that the exchange is limited to authorized individuals and to the minimum necessary data."]}]}], "gaps": 1}], "quotes_verified": 122, "quotes_total": 122, "model_name": "Claude Opus 5.5", "run_dates": "10 Nov 2026 (UTC)", "kb_docs": 12, "kb_passages": 797}</script>
+<script>
+window.__errors = [];
+window.addEventListener("error", e => window.__errors.push(String(e.message)));
+const D = JSON.parse(document.getElementById("data").textContent);
+const EMBED = new URLSearchParams(location.search).has("embed");
+if (EMBED) document.body.classList.add("embed");
+
+function fit() {
+  const vp = document.getElementById("vp");
+  const k = Math.min(vp.clientWidth / 1920, vp.clientHeight / 1080);
+  document.getElementById("canvas").style.setProperty("--k", String(k));
+}
+window.addEventListener("resize", fit); fit();
+
+const NODES = [["req","SRC","Handoff request"],["ct","RULES","Consent tracker"],["DHA","M","DHA agent"],["DOH","M","DoH agent"],
+               ["FEDERAL","M","Federal agent"],["qc","P","Quote checker"],["co","P","Coordinator"],["out","D / SINK","Outcome"]];
+const LABEL = {PERMIT:"Allowed", PERMIT_WITH_CONDITIONS:"Allowed with conditions", BLOCK:"Blocks it", SILENT:"Rules silent", NOT_APPLICABLE:"Not applicable"};
+const CHIP = {PERMIT:"c-green", PERMIT_WITH_CONDITIONS:"c-amber", BLOCK:"c-red", SILENT:"c-violet", NOT_APPLICABLE:"c-gray"};
+const SHORT = {DHA:"Dubai Health Authority (DHA)", DOH:"Abu Dhabi Department of Health (DoH)", FEDERAL:"UAE federal law"};
+const BRIEF = {DHA:"Dubai (DHA)", DOH:"Abu Dhabi (DoH)", FEDERAL:"Federal law"};
+const FULL = "s1_care_transfer";            // the one scenario shown step by step; the others are condensed
+const STORY = {
+  s1_care_transfer: "A patient moves from an Abu Dhabi hospital to a Dubai hospital and asks for the records to follow.",
+  s4_care_transfer_completed: "The same transfer, after the patient signs the consents and the hospitals confirm a signed-referral route.",
+  s2_research_reuse: "Error scenario: the Dubai hospital shares a de-identified copy for AI training, then the partner wants to process it outside the UAE.",
+  s5_ai_training_completed: "AI training again, this time after the patient opts in, with ethics approval and UAE-only processing.",
+  s3_care_transfer_arabic: "The care transfer again, for a patient who writes in Arabic."
+};
+const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
+function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; }
+function add(parent, child, delay) { if (delay !== undefined) { child.classList.add("pop"); child.style.animationDelay = delay + "s"; } parent.appendChild(child); return child; }
+
+function drawPipe(state) {
+  const p = document.getElementById("pipe"); p.replaceChildren();
+  NODES.forEach(([id, tag, name], i) => {
+    if (i) p.appendChild(el("div", "arrow", "→"));
+    const n = el("div", "node " + (state[id] || "")); n.appendChild(el("small", "", tag)); n.appendChild(document.createTextNode(name));
+    if (state.anim) { n.style.transitionDelay = (i * 0.35) + "s"; }
+    p.appendChild(n);
+  });
+}
+
+const frames = [];
+function F(where, caption, pipe, render) { frames.push({where, caption, pipe: pipe || {}, render}); }
+
+// ---------- intro ----------
+F("Introduction", "A checkpoint that checks every regulator's rules before a patient's health record leaves a hospital.", {}, s => {
+  const t = add(s, el("div", "title"), 0);
+  t.appendChild(el("h1", "", "SovereignGuard"));
+  t.appendChild(el("h2", "", "Passport control for health records"));
+  t.appendChild(el("p", "", "Team Polaris · Asna Khan (team leader) · Shafi Anwar"));
+  t.appendChild(el("p", "", "ITU AI for Good Sandbox Hackathon, United Arab Emirates 2026"));
+  t.appendChild(el("p", "", `Every scenario result in these slides comes from the saved runs of the real system (${D.model_name}, ${D.run_dates}).`));
+  t.appendChild(el("p", "muted", "Research prototype on simulated scenarios. Not legal advice."));
+});
+F("The problem", "One record, three regulators. Before it moves, someone has to check all three sets of rules.", {}, s => {
+  const r = add(s, el("div", "grid3"), 0);
+  [["Dubai Health Authority (DHA)","Rules for Dubai facilities"],["Department of Health - Abu Dhabi (DoH)","Rules for Abu Dhabi facilities"],["UAE federal law","Applies everywhere in the UAE"]]
+    .forEach(([h, p], i) => { const c = add(r, el("div", "card"), 0.2 + i * 0.3); c.appendChild(el("h3", "", h)); c.appendChild(el("p", "", p + ". Its own rules on consent and sharing.")); });
+  const w = add(s, el("div", "card"), 1.3); w.style.marginTop = "calc(3*var(--vh))";
+  w.appendChild(el("h3", "", "Three reasons a record leaves a hospital in our scenarios"));
+  const row = el("div", ""); ["Continuing treatment in another emirate", "AI training by a research partner", "Processing on a server"].forEach(x => row.appendChild(el("span", "chip c-gray", x)));
+  w.appendChild(row);
+});
+F("Setup", "It runs on an ordinary laptop. AI is used where judgement is needed, fixed rules everywhere else.", {}, s => {
+  const r = add(s, el("div", "row"), 0); r.style.alignItems = "stretch";
+  const h = add(r, el("div", "card"), 0.1); h.style.flex = "1"; h.appendChild(el("h3", "", "Hardware"));
+  const hu = el("ul"); ["Laptop: Apple M1 Pro, 16 GB RAM", "No special hardware"].forEach(x => hu.appendChild(el("li", "", x))); h.appendChild(hu);
+  const sw = add(r, el("div", "card"), 0.4); sw.style.flex = "2.2"; sw.appendChild(el("h3", "", "Software"));
+  const su = el("ul");
+  ["Python 3.12", `Knowledge base: ${D.kb_docs} public UAE documents, ${D.kb_passages} passages, split by regulator (ChromaDB)`,
+   `Regulator agents and patient navigator: ${D.model_name}`, "Consent tracker, coordinator and quote checker: fixed rules, no AI",
+   "The same 12 documents are also built with the ITU reference code (ITUAIReadiness): 572 passages"].forEach((x, i) => add(su, el("li", "", x), 0.6 + i * 0.2));
+  sw.appendChild(su);
+});
+F("Architecture", "Each regulator agent reads only its own regulator's documents. Labels follow the ITU-T Y.3172 pipeline.",
+  {anim: 1, req:"active", ct:"active", DHA:"active", DOH:"active", FEDERAL:"active", qc:"active", co:"active", out:"active"}, s => {
+  const c = add(s, el("div", "card"), 0); c.style.maxWidth = "calc(70*var(--vw))"; c.style.margin = "calc(2*var(--vh)) auto 0";
+  c.appendChild(el("h3", "", "How a handoff is checked"));
+  const ol = el("ol", "list");
+  ["The consent tracker compares the request with what the patient agreed to.",
+   "Only the regulators involved are asked: the sender's emirate, the receiver's emirate and federal law. Each answers on its own and quotes the clause.",
+   "The quote checker matches every quote against the source text.",
+   "The coordinator applies fixed rules: any block means BLOCKED; anything missing means ON HOLD with one checklist; otherwise RELEASED."]
+   .forEach((x, i) => add(ol, el("li", "", x), 0.5 + i * 0.35));
+  c.appendChild(ol);
+});
+
+// ---------- scenarios ----------
+D.scenarios.forEach((sc) => {
+  F(sc.title, STORY[sc.id] || sc.title, {req:"active"}, s => {
+    const c = add(s, el("div", "card"), 0); c.style.maxWidth = "calc(70*var(--vw))"; c.style.margin = "calc(4*var(--vh)) auto 0";
+    c.appendChild(el("h3", "", sc.title));
+    const q = el("p", sc.lang === "ar" ? "rtl" : "", "“" + sc.request + "”"); q.style.fontSize = "calc(2.4*var(--vh))"; c.appendChild(q);
+    c.appendChild(el("p", "muted", "Simulated scenario · saved run, no live model call"));
+  });
+  sc.steps.forEach((st) => {
+    if (sc.id === "s3_care_transfer_arabic") return;      // same checks as the first scenario; only the Arabic message differs
+    const involved = new Set(st.regs.map(r => r.code));
+    const base = {}; ["DHA","DOH","FEDERAL"].forEach(c => { if (!involved.has(c)) base[c] = "skip"; });
+    const P = extra => Object.assign({}, base, extra);
+    const stepName = sc.steps.length > 1 ? `Step ${st.id} of ${sc.steps.length}: ` : "";
+    const outCls = {PAUSE:"hold", PROCEED:"rel", BLOCK:"blk"}[st.outcome];
+
+    function layout(s, upto, popAll) {
+      const g = el("div", "split"); s.appendChild(g);
+      const L = el("div", "col"), R = el("div", "col"); g.appendChild(L); g.appendChild(R);
+      L.appendChild(el("h4", "", "Without SovereignGuard")); R.appendChild(el("h4", "", "With SovereignGuard"));
+      const h = el("div", "handoff"); h.appendChild(el("b", "", st.title)); h.appendChild(el("div", "muted", `${st.from} → ${st.to} · purpose: ${st.purpose}`));
+      R.appendChild(h);
+      if (upto >= 1) {
+        const b = add(L, el("div", "banner b-sent", "SENT"), upto === 1 ? 0 : undefined); b.appendChild(el("span", "", "No checks. The record moves at once."));
+        if (st.missed.length) { const c = el("div", "card box"); c.appendChild(el("b", "", "Problems nobody checked")); const u = el("ul"); st.missed.forEach(m => u.appendChild(el("li", "", m))); c.appendChild(u); add(L, c, upto === 1 ? 0.3 : undefined); }
+      }
+      if (upto >= 2) {
+        const c = add(R, el("div", "card box"), upto === 2 ? 0 : undefined); c.appendChild(el("b", "", "Consent tracker "));
+        if (st.consent.length) st.consent.forEach(x => c.appendChild(el("div", "", x))); else c.appendChild(el("span", "muted", "no consent problem found"));
+      }
+      if (upto >= 3) {
+        const grid = el("div", "regs"); R.appendChild(grid);
+        st.regs.forEach((r, i) => {
+          if (upto < 3 + i) return;
+          const c = add(grid, el("div", "card reg"), popAll ? 0.2 + i * 0.35 : ((upto === 3 + i) ? 0 : undefined));
+          c.appendChild(el("h5", "", SHORT[r.code] || r.code));
+          c.appendChild(el("span", "chip " + (CHIP[r.decision] || "c-gray"), LABEL[r.decision] || r.decision));
+          c.appendChild(el("div", "ok", `✓ ${r.verified}/${r.total} quotes matched`));
+          if (r.quote) { c.appendChild(el("div", "q", "“" + r.quote + "”")); c.appendChild(el("div", "src", r.doc)); }
+        });
+      }
+      return R;
+    }
+    const nR = st.regs.length;
+    const sentCap = st.missed.length ? `Without SovereignGuard the record moves at once. ${plural(st.missed.length, "problem", "problems")} nobody checked.` : "Without SovereignGuard the record moves at once, with no checks.";
+    const allDone = {req:"done", ct:"done"}; st.regs.forEach(x => allDone[x.code] = "done");
+    const allActive = {req:"done", ct:"done", qc:"active"}; st.regs.forEach(x => allActive[x.code] = "active");
+    const v = st.regs.reduce((a, r) => a + r.verified, 0), t = st.regs.reduce((a, r) => a + r.total, 0);
+    const decs = [...new Set(st.regs.map(r => r.decision))];
+    const decCap = decs.length === 1 ? `${st.regs.length === 3 ? "All three" : "Both"}: ${(LABEL[decs[0]] || decs[0]).toLowerCase()}.`
+                                     : st.regs.map(r => `${BRIEF[r.code] || r.code}: ${(LABEL[r.decision] || r.decision).toLowerCase()}`).join("; ") + ".";
+    const unmet = st.regs.flatMap(r => r.unmet.map(u => [r.code, u]));
+    const blockRegs = st.regs.filter(r => r.decision === "BLOCK").map(r => SHORT[r.code] || r.code);
+    const blockers = blockRegs.join(" and ");
+    const outCap = st.outcome === "PROCEED" ? "RELEASED. Every regulator is satisfied, so the record is released and the handoff is recorded."
+      : st.outcome === "BLOCK" ? `BLOCKED. ${blockers} ${blockRegs.length > 1 ? "block" : "blocks"} this step. Nothing is released.`
+      : `ON HOLD. ${plural(unmet.length, "item", "items")} still needed. Nothing is released.`;
+    const outcomeFrame = cap => F(sc.title, cap, P(Object.assign({}, allDone, {qc:"done", co:"done", out:outCls})), s => {
+      const R = layout(s, 3 + nR);
+      const cls = {PAUSE:"b-hold", PROCEED:"b-rel", BLOCK:"b-blk"}[st.outcome];
+      const word = {PAUSE:"ON HOLD", PROCEED:"RELEASED", BLOCK:"BLOCKED"}[st.outcome];
+      const b = el("div", "banner " + cls, word);
+      b.appendChild(el("span", "", st.outcome === "PAUSE" ? `${plural(unmet.length, "item", "items")} still needed before release` : (st.outcome === "BLOCK" ? `${blockers} ${blockRegs.length > 1 ? "block" : "blocks"} this step` : "Every regulator is satisfied")));
+      R.insertBefore(b, R.children[2]); b.classList.add("pop");
+    });
+
+    if (sc.id === FULL) {
+      F(sc.title, `${stepName}${st.title}. ${sentCap}`, P({req:"active"}), s => layout(s, 1));
+      F(sc.title, st.consent.length ? "The consent tracker compares the request with what the patient agreed to, and flags a problem." : "The consent tracker compares the request with what the patient agreed to.", P({req:"done", ct:"active"}), s => layout(s, 2));
+      F(sc.title, `Each regulator checks only its own rules and quotes the clause. ${decCap} The quote checker matched ${v} of ${t} quotes to the source text.`, P(allActive), s => layout(s, 3 + nR, true));
+      outcomeFrame(outCap);
+      if (st.outcome === "PAUSE" && unmet.length) {
+        F(sc.title, "Care Passport: one checklist of what is still missing, for the patient and the hospitals.", P(Object.assign({}, allDone, {qc:"done", co:"done", out:outCls})), s => {
+          const c = add(s, el("div", "card"), 0); c.style.maxWidth = "calc(78*var(--vw))"; c.style.margin = "0 auto";
+          c.appendChild(el("h3", "", "Care Passport · still needed before release"));
+          const u = el("ul", "list"); unmet.forEach(([code, txt], i) => { const li = add(u, el("li", ""), 0.2 + i * 0.25); li.appendChild(el("b", "", "☐ " + code + ": ")); li.appendChild(document.createTextNode(txt)); });
+          c.appendChild(u);
+        });
+      }
+    } else if (st.outcome === "BLOCK") {
+      F(sc.title, `${stepName}${st.title}. ${sentCap}`, P({req:"active"}), s => layout(s, 1));
+      outcomeFrame(`${decCap.replace(/\.$/, "")}. BLOCKED: nothing is released.`);
+      if (sc.id === "s2_research_reuse") {
+        F(sc.title, "Where our own system went wrong, and why nothing leaked.", P(Object.assign({}, allDone, {qc:"done", co:"done", out:outCls})), s => {
+          const c = add(s, el("div", "card"), 0); c.style.maxWidth = "calc(74*var(--vw))"; c.style.margin = "calc(2*var(--vh)) auto 0";
+          c.appendChild(el("h3", "", "Error scenario"));
+          const u = el("ol", "list lg");
+          ["In our first run, both agents said the rules were silent on sending data outside the UAE.",
+           "Our own check showed a retrieval miss, not a real silence: Federal Law No. 2 of 2019, Article 13 prohibits it.",
+           "Because outcomes are fail-closed, the data was held, not released.",
+           "Fix: each agent now runs focused legal-term searches. The federal agent finds Article 13 and blocks the transfer."].forEach((x, i) => add(u, el("li", "", x), 0.3 + i * 0.4));
+          c.appendChild(u);
+        });
+      }
+    } else {
+      outcomeFrame(`${stepName}${st.title}. ${decCap} ${v} of ${t} quotes matched. ${outCap}`);
+      if (sc.id === "s5_ai_training_completed") {
+        F(sc.title, "Same request, different answers: federal law is satisfied, Dubai's rules still need more evidence.", P(Object.assign({}, allDone, {qc:"done", co:"done", out:outCls})), s => {
+          const r = add(s, el("div", "row"), 0); r.style.marginTop = "calc(3*var(--vh))";
+          st.regs.forEach((x, i) => { const c = add(r, el("div", "card"), 0.2 + i * 0.4); c.style.flex = "1"; c.appendChild(el("h3", "", SHORT[x.code] || x.code));
+            c.appendChild(el("div", "big", String(x.unmet.length))); c.appendChild(el("p", "", x.unmet.length === 1 ? "item still missing" : "items still missing")); });
+        });
+      }
+    }
+  });
+  if (sc.id === FULL || sc.lang === "ar") {
+    const p = sc.plan;
+    F(sc.title, sc.lang === "ar" ? "The patient wrote in Arabic and gets the checklist in Arabic." : "The patient gets plain-language next steps.", {}, s => {
+      const c = add(s, el("div", "card" + (sc.lang === "ar" ? " rtl" : "")), 0); c.style.maxWidth = "calc(74*var(--vw))"; c.style.margin = "0 auto";
+      c.appendChild(el("h3", "", p.headline)); c.appendChild(el("p", "", p.status_in_plain_words));
+      const u = el("ol", "list"); p.what_you_need_to_do.forEach((x, i) => add(u, el("li", "", x), 0.3 + i * 0.25)); c.appendChild(u);
+      c.appendChild(el("p", "muted", p.disclaimer));
+    });
+  }
+});
+
+// ---------- outro ----------
+const outs = {PAUSE:0, PROCEED:0, BLOCK:0}; D.scenarios.forEach(sc => sc.steps.forEach(st => outs[st.outcome]++));
+F("Results", "Every quote the agents used was checked against the regulation text.", {}, s => {
+  const r = add(s, el("div", "grid3"), 0); r.style.marginTop = "calc(4*var(--vh))";
+  [[String(D.scenarios.length), "simulated scenarios, each run with and without SovereignGuard"],
+   [`${D.quotes_verified}/${D.quotes_total}`, "quoted clauses matched to the source text"],
+   [`${outs.PROCEED} · ${outs.PAUSE} · ${outs.BLOCK}`, "handoffs released · held · blocked"]]
+   .forEach(([b, t], i) => { const c = add(r, el("div", "card"), 0.2 + i * 0.35); c.style.textAlign = "center"; c.appendChild(el("div", "big", b)); c.appendChild(el("p", "", t)); });
+});
+F("Gaps and next steps", "Gaps for policy makers, and what comes next.", {}, s => {
+  const r = add(s, el("div", "row"), 0); r.style.alignItems = "stretch";
+  const g = add(r, el("div", "card"), 0.1); g.style.flex = "1"; g.appendChild(el("h3", "", "Policy gaps found"));
+  const gu = el("ul", "list"); ["No rule for recognising consent across emirate frameworks", "Different wording for \"de-identified\"", "AI model training is not named as a purpose"].forEach((x, i) => add(gu, el("li", "", x), 0.3 + i * 0.25)); g.appendChild(gu);
+  const n = add(r, el("div", "card"), 0.5); n.style.flex = "1"; n.appendChild(el("h3", "", "Next steps"));
+  const src = add(s, el("p", "muted", "Policy gaps and next steps: from our technical report, sections 7.2 and 8."), 0.9); src.style.fontSize = "calc(1.8*var(--vh))"; src.style.textAlign = "center";
+  const nu = el("ul", "list"); ["Legal expert review of the agents' outputs", "Add the missing federal texts and official Arabic versions", "Offline local-model option, so it runs without an API key", "Reuse in a second domain by swapping the regulators' documents", "Y.3172 extension proposal and a paper"].forEach((x, i) => add(nu, el("li", "", x), 0.7 + i * 0.2)); n.appendChild(nu);
+});
+
+// ---------- player ----------
+let cur = 0;
+function show(i) {
+  cur = Math.max(0, Math.min(frames.length - 1, i));
+  const f = frames[cur];
+  document.getElementById("where").textContent = `${f.where} · ${cur + 1} / ${frames.length}`;
+  document.getElementById("captext").textContent = f.caption;
+  drawPipe({});
+  const st = document.getElementById("stage"); st.replaceChildren(); f.render(st);
+  requestAnimationFrame(() => requestAnimationFrame(() => drawPipe(f.pipe)));
+  if (window.parent !== window) window.parent.postMessage({sg: "pos", i: cur, n: frames.length}, "*");   // slide number only
+}
+window.__go = show; window.__n = () => frames.length;
+// The product page may send only these two commands; anything else is ignored.
+window.addEventListener("message", e => {
+  if (e.source !== window.parent || !e.data || typeof e.data !== "object") return;
+  if (e.data.sg === "go" && Number.isInteger(e.data.i)) show(e.data.i);
+  if (e.data.sg === "step" && (e.data.d === 1 || e.data.d === -1)) show(cur + e.data.d);
+});
+document.addEventListener("keydown", e => {
+  if (["ArrowRight", " ", "PageDown", "Enter"].includes(e.key)) { e.preventDefault(); show(cur + 1); }
+  if (["ArrowLeft", "PageUp", "Backspace"].includes(e.key)) { e.preventDefault(); show(cur - 1); }
+  if (e.key === "Home") show(0);
+  if (e.key === "End") show(frames.length - 1);
+});
+document.getElementById("back").addEventListener("click", e => e.stopPropagation());
+document.getElementById("canvas").addEventListener("click", () => show(cur + 1));
+show(0);
+</script>
+</body>
+</html>
